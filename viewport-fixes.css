@@ -1,0 +1,56 @@
+/* Keep controls inside the safe viewport, including small landscape tablets. */
+.game{height:100dvh;overflow:hidden}
+.game button{max-width:100%;min-height:36px}
+.game .toolbar{max-width:calc(100% - 330px);flex-wrap:wrap;justify-content:flex-end}
+.game #target{max-width:calc(100% - 30px);white-space:normal;text-align:center}
+.game .interact{max-width:calc(100% - 30px);white-space:normal}
+.game .camera-switches{max-width:45%;flex-wrap:wrap;justify-content:flex-end}
+#activity{max-height:calc(100dvh - 24px);overscroll-behavior:contain}
+#activity .close{position:sticky;top:0;z-index:2;background:#fffced;border-radius:50%}
+@media(max-height:760px) and (min-width:761px){
+ .shell{min-height:100dvh;padding:14px 28px}
+ .shell main{padding:12px 0;gap:24px;grid-template-columns:1fr 390px}
+ .shell .intro{padding-top:15px}.shell h1{font-size:65px}
+ .shell .panel{padding:14px 18px}.shell .character canvas{height:150px}
+ .shell .grades-title{margin-top:12px}.shell .start{margin-top:12px;padding:10px}
+ .shell .sub{margin-bottom:10px}.shell .mission{padding:12px}
+}
+@media(max-width:760px){
+ .shell{padding:10px;min-height:100dvh}.shell main{gap:8px;padding:8px 0}
+ .shell .intro{padding-top:0}.shell .eyebrow{letter-spacing:0}
+ .shell h1{font-size:36px;letter-spacing:-2px;margin:3px 0;line-height:1.1}
+ .shell h1 br{display:none}.shell .intro>p{font-size:11px;line-height:1.35}
+ .shell .panel{padding:10px 12px}.shell .panel h2{font-size:19px}
+ .shell .sub{margin-bottom:6px;font-size:11px}.shell .character canvas{height:110px}
+ .shell .character{padding-bottom:6px}.shell .character strong{font-size:16px}
+ .shell .character small{font-size:9px}.shell .grades-title{margin:9px 0 6px}
+ .shell .grade{padding:7px 2px}.shell .start{padding:9px;margin:10px 0}
+ .shell .selection{margin:6px 0}.shell footer{margin-top:3px;flex-wrap:wrap}
+ .game .hud{top:8px;left:8px;right:auto;max-width:calc(100% - 16px);padding:6px 8px}
+ .game .hud b{font-size:11px}.game .hud small{font-size:9px}
+ .game .toolbar{top:66px;left:8px;right:8px;max-width:none;justify-content:flex-start;gap:4px}
+ .game .toolbar button{font-size:10px;padding:5px 8px}
+ .game .quest{top:111px;left:8px;padding:8px;max-width:calc(100% - 116px)}
+ .game .quest p{font-size:10px;line-height:1.45}.game .quest small{letter-spacing:0}
+ .game #live-minimap{top:111px;right:8px;width:98px}
+ .game #heading{top:205px;bottom:auto;right:8px;max-width:98px;font-size:9px}
+ .game .touch-pad{left:8px;bottom:120px;grid-template-columns:repeat(3,36px);gap:3px}
+ .game .touch-pad button{width:36px;height:36px}
+ .game .look-pad{right:8px;bottom:196px}
+ .game .adventure-hotbar{left:8px;right:auto;bottom:57px;transform:none;gap:4px}
+ .game .adventure-hotbar button{min-width:50px;height:54px;padding:2px;border-width:2px}.game .adventure-hotbar .item-icon{width:30px;height:30px}
+ .game .camera-switches{right:8px;bottom:57px;max-width:50%;gap:3px}
+ .game .camera-switches button{min-width:42px;padding:4px;font-size:13px}
+ .game #selected-tool{bottom:150px;max-width:55%;left:auto;right:8px;transform:none;font-size:9px}
+ .game .interact{bottom:215px;font-size:11px;padding:8px 12px}
+ .game #target{bottom:255px;font-size:11px}.game .game-tip{bottom:7px;left:8px;max-width:calc(100% - 16px);font-size:8px}
+}
+@media(max-height:500px) and (min-width:650px){
+ .game .hud{top:8px;left:8px;padding:5px 8px}.game .hud img{width:28px;height:28px}
+ .game .toolbar{top:8px;right:8px}.game .quest{top:67px;left:8px;max-width:225px;padding:7px}
+ .game .quest p{font-size:10px;line-height:1.35}.game #live-minimap{top:60px;width:105px}
+ .game #heading{top:53px;bottom:auto;right:130px;left:auto;transform:none;font-size:9px}.game .adventure-hotbar{bottom:8px;left:50%;right:auto;transform:translateX(-50%)}
+ .game .adventure-hotbar button{height:48px;min-width:58px;padding:2px;border-width:2px}.game .adventure-hotbar .item-icon{width:26px;height:26px}.game .adventure-hotbar button span{font-size:9px;line-height:11px}.game #selected-tool{bottom:64px;max-width:50%;white-space:normal}
+ .game .interact{bottom:104px}.game #target{bottom:149px}.game .touch-pad{bottom:75px}
+ .game .look-pad{bottom:145px}.game .camera-switches{bottom:8px}.game .game-tip{bottom:5px;font-size:8px;max-width:220px}
+}

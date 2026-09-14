@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+*.log
+.DS_Store
+캐릭터_다각도/
+NotebookLM-학습강화-회의보고서.md
+통합수정-검증결과.md
+patch-escape.cjs
+wire-icons.cjs
+
