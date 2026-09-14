@@ -15,7 +15,7 @@ if(!girl){for(let i=0;i<7;i++)box(ctx,43+i*15,181-i*24,221-i*30,27,27,i>4?'#eef5
 box(ctx,91,107,119,103,32,'#f5c9a6');const hair=girl?'#994839':'#604333';box(ctx,87,91,126,29,34,hair);[[87,113,22,33],[114,114,25,15],[172,113,18,22],[200,112,13,35]].forEach(a=>box(ctx,...a,5,hair));
 if(girl){for(let i=0;i<4;i++){box(ctx,73+(i%2)*5,175+i*25,25,26,16,hair);box(ctx,219-(i%2)*5,169+i*25,25,26,16,hair)}ctx.fillStyle='#edbd45';ctx.fillRect(79,257,22,7);ctx.fillRect(214,250,22,7)}
 ctx.fillStyle='#382f2c';ctx.fillRect(116,150,10,13);ctx.fillRect(175,150,10,13);ctx.fillRect(139,179,30,4);ctx.fillRect(134,174,5,5);ctx.fillRect(169,174,5,5);ctx.fillStyle='#e7a28c';ctx.fillRect(103,168,20,7);ctx.fillRect(180,168,20,7);box(ctx,129,237,45,44,3,'#fff8dd');ctx.fillStyle='#367450';ctx.fillRect(134,263,35,13);ctx.fillStyle='#e9c343';ctx.fillRect(145,240,13,12);ctx.fillStyle='#304a3b';ctx.font='bold 15px Malgun Gothic';ctx.fillText('모덕',135,265);ctx.restore()}
-avatar('sani');avatar('nari');
+// Start-screen portraits are rendered only by the current 3D character renderer.
 const world=$('#world'),ctx=world.getContext('2d');
 function render(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);world.width=w*dpr;world.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#9bcdd4');g.addColorStop(.56,'#d3e9da');g.addColorStop(.57,'#6db7be');g.addColorStop(1,'#287f96');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
 const sx=w/1440,sy=h/900;ctx.save();ctx.scale(sx,sy);ctx.fillStyle='#fff8d1';ctx.fillRect(696,100,72,72);ctx.fillStyle='#fff8d140';ctx.fillRect(685,89,94,94);

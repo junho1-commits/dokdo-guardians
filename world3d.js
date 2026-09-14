@@ -143,12 +143,13 @@ if(active){cancelAnimationFrame(frame);buildWorld();last=performance.now();frame
 window.dokdo3DReady=true;
 document.querySelector('#engine-status').textContent='✓ 3D 버전 적용됨 · 1 / 2 / 3 시점 전환';
 // The selection portraits use the same models as the playable characters.
-function paintPortraits(){if(active)return;const ps=new T.Scene();ps.background=new T.Color('#e4eedb');ps.add(new T.HemisphereLight('#ffffff','#8eaa7d',3));const light=new T.DirectionalLight('#fff0d1',3);light.position.set(-3,6,5);ps.add(light);const pc=new T.PerspectiveCamera(36,400/460,.1,30);pc.position.set(3,2.6,6);pc.lookAt(0,1.5,0);renderer3d.setSize(400,460,false);for(const id of ['sani','nari']){const model=makeAvatar(id);ps.add(model);renderer3d.render(ps,pc);const target=document.getElementById(id),g=target.getContext('2d');g.clearRect(0,0,target.width,target.height);g.drawImage(canvas3d,0,0,target.width,target.height);ps.remove(model)}resize3d();}
+function paintPortraits(){if(active)return;const ps=new T.Scene();ps.background=new T.Color('#e4eedb');ps.add(new T.HemisphereLight('#ffffff','#8eaa7d',3));const light=new T.DirectionalLight('#fff0d1',3);light.position.set(-3,6,5);ps.add(light);const pc=new T.PerspectiveCamera(36,400/460,.1,30);pc.position.set(3,2.6,6);pc.lookAt(0,1.5,0);renderer3d.setSize(400,460,false);for(const id of ['sani','nari']){const model=makeAvatar(id);ps.add(model);renderer3d.render(ps,pc);const target=document.getElementById(id),g=target.getContext('2d');g.clearRect(0,0,target.width,target.height);g.drawImage(canvas3d,0,0,target.width,target.height);target.parentElement.dataset.portraitReady="true";ps.remove(model)}resize3d();}
 emblem.onload=paintPortraits;T.DefaultLoadingManager.onLoad=paintPortraits;paintPortraits();
 // A still frame of the actual 3D world replaces the old block-art backdrop.
 function paintBackdrop(){if(active)return;const bc=new T.PerspectiveCamera(53,innerWidth/innerHeight,.1,240);bc.position.set(-39,20,-52);bc.lookAt(-6,0,-10);renderer3d.render(scene3d,bc);world.width=innerWidth;world.height=innerHeight;ctx.drawImage(canvas3d,0,0,world.width,world.height);}
 const portraitsOnly=paintPortraits;T.DefaultLoadingManager.onLoad=()=>{portraitsOnly();paintBackdrop()};paintBackdrop();addEventListener('resize',paintBackdrop);
 }
+
 
 
 

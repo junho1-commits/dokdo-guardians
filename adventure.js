@@ -1,6 +1,6 @@
 'use strict';
 const D=DokdoData, emblem=new Image();emblem.src='교표.jpg';
-emblem.onload=()=>{for(const id of ['sani','nari']){avatar(id);let c=document.getElementById(id).getContext('2d');c.save();c.beginPath();c.arc(197,270,22,0,Math.PI*2);c.clip();c.drawImage(emblem,175,248,44,44);c.restore()}};
+// The 3D renderer owns portrait and crest rendering; never repaint legacy avatars.
 $('.mark').innerHTML='<img src="교표.jpg" alt="모덕초등학교 교표">';
 $('#start').innerHTML='독도 탐험 입장하기 <span aria-hidden="true">➜</span>';
 $('#guide').innerHTML='<button class="close" aria-label="닫기">×</button><span class="step">MODEOK EXPLORERS</span><h2>도구와 단서로 완성하는 독도 이야기</h2><p>6개 구역에서 탐험하고 아이템을 모아 나만의 전시관을 완성해 봐. 두 대원의 능력은 같고, 학년군에 따라 문제가 달라져.</p><p><b>WASD / 방향키</b> 이동 · <b>화면 드래그 / Q·R</b> 둘러보기<br><b>E</b> 조사 · <b>B</b> 가방 · <b>M</b> 지도 · <b>Esc</b> 닫기</p><p>아이템을 받으면 가방에서 <b>선택하기</b>를 눌러. 가까운 대상에 선택한 아이템을 사용하면 다음 단서가 열려!</p><p class="note">공간과 인물은 학습용 창작입니다. 실제 독도 지형이나 방문 동선을 재현한 지도가 아닙니다. 학습 자료의 출처는 게임 속 도움말에서 확인할 수 있어요.</p><button class="dialog-action" data-close>탐험 준비하기</button>';

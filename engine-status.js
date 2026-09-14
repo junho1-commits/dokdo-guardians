@@ -1,3 +1,3 @@
 const engineStatus=document.createElement('p');engineStatus.id='engine-status';engineStatus.style.cssText='font-size:12px;line-height:1.7;text-align:center;background:#e6efdb;padding:9px;border-radius:8px;color:#345d45';document.querySelector('.panel').append(engineStatus);
 if(location.protocol==='file:'){engineStatus.innerHTML='3D 버전은 <b>실행.cmd</b>를 실행한 뒤<br><a href="http://127.0.0.1:4173/">여기를 눌러 접속</a>해 주세요. 현재는 이전 그래픽입니다.';}
-else{engineStatus.textContent='3D 그래픽을 준비하고 있어요…';setTimeout(()=>{if(!window.dokdo3DReady)engineStatus.textContent='3D 그래픽을 불러오지 못했어요. 새로고침하거나 Chrome·Edge에서 같은 주소를 열어 주세요.'},15000);}
+else{engineStatus.textContent='3D 그래픽을 준비하고 있어요…';setTimeout(()=>{if(!window.dokdo3DReady)engineStatus.textContent='3D 그래픽을 불러오지 못했어요. 새로고침하거나 Chrome·Edge에서 같은 주소를 열어 주세요.';document.querySelectorAll('.character:not([data-portrait-ready])').forEach(card=>card.dataset.portraitFailed='true')},15000);}
