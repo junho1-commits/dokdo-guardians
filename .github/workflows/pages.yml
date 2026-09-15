@@ -28,6 +28,22 @@ jobs:
           cp *.html *.css *.js 교표.jpg _site/
           cp -r assets vendor _site/
           touch _site/.nojekyll
+      - name: Version browser assets together
+        env:
+          ASSET_VERSION: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import os, pathlib, re
+          version = os.environ['ASSET_VERSION']
+          for page in pathlib.Path('_site').glob('*.html'):
+              text = page.read_text(encoding='utf-8')
+              text = re.sub(r'((?:src|href)=["\x27])([^"\x27?]+\.(?:js|css))(["\x27])', lambda m: m[1] + m[2] + '?v=' + version + m[3], text)
+              page.write_text(text, encoding='utf-8')
+          for script in pathlib.Path('_site').rglob('*.js'):
+              text = script.read_text(encoding='utf-8')
+              text = re.sub(r'(from\s*["\x27])(\./[^"\x27?]+\.js)(["\x27])', lambda m: m[1] + m[2] + '?v=' + version + m[3], text)
+              script.write_text(text, encoding='utf-8')
+          PY
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
