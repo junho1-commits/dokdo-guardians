@@ -43,11 +43,46 @@ const puzzles={
  history:{'1':[q('오래전 기록과 오늘의 기록 중 먼저 있었던 것은?',['오래전 기록','오늘의 기록'],0,'옛 기록은 오늘보다 앞선 시간의 이야기야.')],'3':[q('자료 카드를 시간 순서대로 놓아 줘.',['오늘의 독도 활동 → 1900년 칙령','1900년 칙령 → 오늘의 독도 활동'],1,'1900년의 기록이 오늘날 활동보다 앞서 있어.'),q('독도의 역사를 알리는 데 도움이 되는 것은?',['출처가 있는 옛 기록','근거 없이 만든 소문','숫자를 무작위로 적은 메모'],0,'역사 이야기는 출처와 내용을 확인한 자료로 설명해야 해.')],'5':[q('1900년 자료에서 확인할 수 있는 내용은?',['오늘날 독도의 방문객 수','울도군이 관할하는 구역','독도의 모든 생물 이름'],1,'칙령 제41호는 울도군의 행정과 관할 구역에 관한 기록이야.'),q('두 기록을 전시할 때 가장 정확한 설명은?',['옛 행정 기록과 현재 관리 활동을 구분해 소개한다.','1900년 자료가 오늘날의 모든 시설을 설명한다.','게임 속 보관함 자체가 실제 역사 유물이다.'],0,'학습용 카드와 실제 자료를 구분하고 각 자료가 말해 주는 범위를 지켜야 해.')]},
  care:{'1':[q('독도를 아끼는 행동을 골라 줘.',['쓰레기를 되가져오기','꽃을 꺾어 가져오기'],0,'추억은 기록으로 남기고 쓰레기는 되가져오자.')],'3':[q('바닷새 관찰 장소의 안내문으로 알맞은 것은?',['둥지 가까이 자유롭게 들어오세요.','생물과 거리를 두고 정해진 길을 이용하세요.','새에게 과자를 나눠 주세요.'],1,'생물의 삶터를 방해하지 않도록 거리를 두자.'),q('포장지 옆에 있는 자연석은 어떻게 할까?',['둘 다 가방에 넣는다.','자연석만 가져간다.','포장지만 정리하고 자연석은 둔다.'],2,'사람이 버린 쓰레기와 자연물을 구분하자.')],'5':[q('방문객 관찰 동선을 정할 때 더 적절한 계획은?',['서식지를 가로지르는 가장 짧은 길','서식지와 거리를 둔 지정 관찰 지점','어디든 자유롭게 걷는 길'],1,'관찰 기회를 제공하면서도 생물과 서식 환경에 주는 방해를 줄여야 해.'),q('보전 활동의 결과를 확인하려면?',['방문 전후의 관찰 기록을 비교한다.','한 번 깨끗해 보이면 조사를 멈춘다.','생물이 안 보이면 서식지를 없앤다.'],0,'지속적인 관찰과 기록 비교는 보전 방안을 개선하는 데 도움이 돼.')]}
 };
+// Room guides: optional conversations that never gate progress. Lines follow the grade bands used by puzzles.
+// A stage may hold one guide or a list; fixed:true marks a statue or sign that does not turn toward the player.
+const npcs=[
+ null,
+ {id:'keeper',kind:'keeper',name:'등대 아저씨',role:'독도 등대를 지키는 등대지기',x:2.3,z:-6.3,
+  lines:{'1':['안녕! 나는 독도 등대를 지키는 등대 아저씨야.','밤이 되면 등대 불빛이 배들에게 "독도가 여기 있어" 하고 알려 줘.'],
+   '3':['안녕! 나는 독도 등대를 지키는 등대 아저씨야. 독도 등대는 동도에 있고, 사람이 머물며 지키는 등대야.','밤이나 날씨가 나쁜 날에도 등대 불빛이 배들에게 독도의 위치를 알려 줘.'],
+   '5':['안녕! 나는 독도 등대를 지키는 등대 아저씨야. 독도 등대는 동도에 있고, 사람이 머물며 지키는 등대야.','등대는 배의 안전을 지키는 시설이면서, 우리가 독도를 꾸준히 관리하고 있다는 표시이기도 해.']},
+  task:'쌍안경으로 창밖의 동도와 서도를 찾아본 다음, 지도로 탐사 경로를 완성해 줘.'},
+ {id:'researcher',kind:'researcher',name:'바다 박사',role:'독도의 생물을 조사하는 생태 연구원',x:3,z:-7,
+  lines:{'1':['나는 독도의 생물을 조사하는 바다 박사야.','괭이갈매기 같은 새들이 독도에서 알을 낳고 새끼를 키워. 새를 볼 땐 멀리서 조용히!'],
+   '3':['나는 독도의 생물을 조사하는 바다 박사야. 괭이갈매기, 바다제비 같은 새들이 독도에서 알을 낳고 새끼를 키워.','새를 관찰할 땐 멀리서 조용히, 먹이를 주지 않고 기록하는 게 규칙이야. 바닷속에는 해조류가 숲처럼 자라서 물고기의 집이 돼.'],
+   '5':['나는 독도의 생물을 조사하는 바다 박사야. 괭이갈매기, 바다제비 같은 새들이 독도에서 알을 낳고 새끼를 키워서 독도는 천연기념물로 보호받는 곳이야.','새를 관찰할 땐 멀리서 조용히, 먹이를 주지 않고 기록하는 게 규칙이야. 바닷속 해조숲은 물고기와 작은 생물의 집이라서 독도를 "바다 생물의 집"이라고도 불러.']},
+  task:'카메라로 바닷새를, 쌍안경으로 해조숲 관찰창을 살펴보고 생물 도감을 완성해 줘.'},
+ [{id:'anyongbok',kind:'anyongbok',name:'안용복',role:'조선 시대 동래의 어부',x:3,z:-7,
+  lines:{'1':['나는 조선 시대 어부 안용복이오.','먼 옛날 나는 배를 타고 일본까지 가서, 울릉도와 독도가 우리 땅이라고 당당히 말했소.'],
+   '3':['나는 조선 시대 동래 사람, 어부 안용복이오.','일본 어부들이 울릉도 바다에 들어와 고기를 잡자, 나는 두 번이나 일본으로 건너가 울릉도와 독도가 조선 땅임을 밝혔소.'],
+   '5':['나는 조선 시대 동래 사람, 어부 안용복이오. 일본 어부들이 울릉도 바다에 들어와 고기를 잡자, 나는 두 번이나 일본으로 건너가 울릉도와 독도가 조선 땅임을 밝혔소.','그 무렵 일본은 자기 나라 어부들이 울릉도로 건너가는 것을 금지했소. 옛 기록에 남은 이야기이니, 이 방의 자료함에서 근거를 찾아보시오.']},
+  task:'1900년 자료 보관함과 오늘의 독도 보관함에서 기록을 모아 시대 순서로 연결해 주시오.'},
+ {id:'isabu',kind:'isabu',name:'이사부 장군 동상',role:'신라 시대의 장군 · 동상 안내판',prompt:'안내판 읽기',fixed:true,x:-2.5,z:-8.3,
+  lines:{'1':['이사부는 아주 먼 옛날 신라의 장군이야.','이사부 장군이 우산국을 신라의 땅으로 만들었다고 옛 역사책에 적혀 있어.'],
+   '3':['이사부는 신라 시대의 장군이야. 우산국은 울릉도와 그 주변 섬을 다스리던 작은 나라였어.','『삼국사기』에는 이사부 장군이 우산국을 신라의 땅으로 만들었다고 기록되어 있어. 우리나라와 독도의 인연이 아주 오래되었다는 뜻이야.'],
+   '5':['이사부는 신라 시대의 장군이야. 우산국은 울릉도와 그 주변 섬을 다스리던 작은 나라였고, 『삼국사기』에는 이사부 장군이 우산국을 신라의 땅으로 만들었다고 기록되어 있어.','이 기록은 안용복의 이야기보다 천 년도 더 앞선 일이야. 이 방의 자료를 시대 순서로 정리해 봐.']},
+  task:'안용복의 이야기도 들어 보고, 자료함에서 옛 기록을 찾아 줘.'}],
+ {id:'gangchi',kind:'sealion',name:'강치 강이',role:'옛날 독도에 살던 바다사자',x:-3.5,z:-6.5,
+  lines:{'1':['나는 바다사자 강치야. 옛날에는 우리 가족이 독도 바위에서 많이 살았대.','사람들이 마구 잡아서 지금은 독도에서 강치를 볼 수 없어. 그래서 남은 생물을 잘 지켜야 해.'],
+   '3':['나는 바다사자 강치야. 옛날에는 우리 가족이 독도 바위에서 무리 지어 살았지만, 사람들이 마구 잡아서 지금은 독도에서 볼 수 없어.','그래서 지금 독도에 사는 새와 바다 생물을 지키는 게 더 중요해. 쓰레기를 되가져가고, 생물을 놀라게 하지 않는 것부터야.'],
+   '5':['나는 바다사자 강치야. 옛날에는 우리 가족이 독도 바위에서 무리 지어 살았지만, 사람들이 마구 잡아서 지금은 독도에서 볼 수 없어.','한 번 사라진 생물은 다시 돌아오기 어려워. 쓰레기를 되가져가고 생물을 놀라게 하지 않는 작은 선택이 독도의 내일을 바꿔.']},
+  task:'장갑을 끼고 사람이 버린 쓰레기를 정리한 다음, 보전 계획을 세워 줘.'},
+ {id:'guard',kind:'guard',name:'수호 대원과 삽사리',role:'독도경비대원과 독도 지킴이 삽살개',x:2.6,z:-7,
+  lines:{'1':['나는 독도를 지키는 독도경비대원이야. 이 친구는 삽살개 삽사리!','우리는 독도에서 지내며 매일 섬을 살펴.'],
+   '3':['나는 독도를 지키는 독도경비대원이야. 이 친구는 우리나라 토종개인 삽살개 삽사리!','독도에는 경비대원과 등대지기처럼 독도를 지키고 관리하는 사람들이 살고 있어. 삽사리도 우리와 함께 독도에서 지내.'],
+   '5':['나는 독도를 지키는 독도경비대원이야. 이 친구는 우리나라 토종개인 삽살개 삽사리! 독도에는 경비대원과 등대지기처럼 독도를 지키고 관리하는 사람들이 살고 있어.','네가 모은 지형·역사·보전 단서를 전시에 채우면, 마지막에 수호 메시지를 함께 보낼 수 있어.']},
+  task:'세 전시에 알맞은 단서를 사용해서 나만의 독도 전시를 완성해 줘.'}
+];
 function fresh(){return {version:2,stage:0,bag:[],done:[],notes:[],finished:false}}
 function gate(s){return stages[s.stage].nodes.every(n=>s.done.includes(n.id))}
 function inspect(s,n,item){if(s.done.includes(n.id))return 'done';if((n.requires||[]).some(x=>!s.bag.includes(x)))return 'requires';if(n.use&&item!==n.use)return 'tool';return 'ready'}
 function complete(s,n){if(s.done.includes(n.id))return s;return {...s,bag:[...new Set([...s.bag,...(n.grant||[])])],done:[...s.done,n.id],notes:[...s.notes,n.name]}}
 function next(s){if(!gate(s))return s;return s.stage===stages.length-1?{...s,finished:true}:{...s,stage:s.stage+1}}
 function valid(s){if(!s||s.version!==2||!Number.isInteger(s.stage)||s.stage<0||s.stage>=stages.length||!Array.isArray(s.bag)||!s.bag.every(x=>items[x])||!Array.isArray(s.done)||!Array.isArray(s.notes)||typeof s.finished!=='boolean')return false;const ids=stages.flatMap(x=>x.nodes.map(n=>n.id));if(!s.done.every(x=>ids.includes(x))||!s.notes.every(x=>typeof x==='string'))return false;for(let i=0;i<s.stage;i++)if(!stages[i].nodes.every(n=>s.done.includes(n.id)))return false;for(const stage of stages)for(const n of stage.nodes)if(s.done.includes(n.id)&&(n.grant||[]).some(x=>!s.bag.includes(x)))return false;return !s.finished||s.stage===5&&gate(s)}
-const api={items,stages,puzzles,sources,fresh,gate,inspect,complete,next,valid};if(typeof module!=='undefined')module.exports=api;else root.DokdoData=api;
+const api={items,stages,puzzles,npcs,sources,fresh,gate,inspect,complete,next,valid};if(typeof module!=='undefined')module.exports=api;else root.DokdoData=api;
 })(typeof window!=='undefined'?window:globalThis);
