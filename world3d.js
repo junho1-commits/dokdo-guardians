@@ -85,7 +85,7 @@ const beak=mesh(new T.ConeGeometry(.15,.43,24),'#e8bc4d',0,1.88,.69,g);beak.rota
 sphere(0,1.88,.89,.055,'#cb6651',g,1,.7,.5);
 const scarf=mesh(new T.TorusGeometry(.35,.09,10,32),'#37a9ad',0,1.54,.02,g);scarf.rotation.x=Math.PI/2;
 rb(.18,1.24,.52,.17,.42,.09,'#37a9ad',g);
-mesh(new T.CircleGeometry(.14,24),new T.MeshBasicMaterial({map:tex('교표.jpg')}),0,1.1,.526,g);
+// Doki wears only the scarf; school branding remains on the school signs.
 return g;
 }
 function makeAvatar(kind){return createMascot(kind,tex('교표.jpg'));}
