@@ -1,0 +1,355 @@
+/* Interactive Learning Mini-Tools Styling */
+.interactive-tool-box {
+  background: #fdfbee;
+  border: 2px solid #527c69;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Malgun Gothic', sans-serif;
+  color: #213d33;
+}
+.interactive-tool-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-bottom: 2px solid #dfebda;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.interactive-tool-header small {
+  font-size: 12px;
+  color: #5b7566;
+  line-height: 1.5;
+}
+.interactive-tool-title {
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #265543;
+}
+.mini-tool-host { margin: 4px 0 0; }
+.mini-tool-hint {
+  font-size: 13px;
+  color: #5b7566;
+  background: #eef4e6;
+  border-left: 4px solid #8ab897;
+  padding: 8px 12px;
+  border-radius: 0 8px 8px 0;
+  margin: 6px 0 0;
+}
+.mini-tool-hint.ready { background: #e0f2e4; border-left-color: #2f8f4e; color: #226b3a; font-weight: bold; }
+/* 잠긴 승인 버튼: 미니도구 완료 전까지 비활성 */
+.actions button.mini-locked[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+  box-shadow: none;
+}
+.actions button.mini-ready {
+  animation: mini-pop 0.45s ease-out;
+  box-shadow: 0 0 0 4px #f1d67a80;
+}
+@keyframes mini-pop {
+  0% { transform: scale(0.94); }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+@keyframes pulse {
+  from { opacity: 0.75; }
+  to { opacity: 1; transform: scale(1.02); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+.shake { animation: shake 0.3s ease-in-out; }
+
+/* 1. Compass Interactive */
+.compass-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+}
+.compass-dial {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffdec 0%, #e3ede0 70%, #9cb8a5 100%);
+  border: 6px solid #375d4a;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2), inset 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+.compass-dial:focus-visible { outline: 4px solid #df8c28; outline-offset: 4px; }
+.compass-dial.dragging, .compass-dial:active { cursor: grabbing; }
+.compass-dial.locked { cursor: default; box-shadow: 0 0 0 5px #7fcf9a80, 0 6px 18px rgba(0, 0, 0, 0.2); }
+.compass-tick {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  margin-left: -1px;
+  pointer-events: none;
+  background: linear-gradient(#5e7f6c 0, #5e7f6c 8px, transparent 8px, transparent calc(100% - 8px), #5e7f6c calc(100% - 8px));
+  opacity: 0.55;
+}
+.compass-tick.mid { background: linear-gradient(#5e7f6c 0, #5e7f6c 13px, transparent 13px, transparent calc(100% - 13px), #5e7f6c calc(100% - 13px)); opacity: 0.7; }
+.compass-tick.major { display: none; }
+.compass-mark {
+  position: absolute;
+  font-weight: 900;
+  font-size: 14px;
+  color: #355344;
+  pointer-events: none;
+}
+.compass-mark.n { top: 10px; left: 50%; transform: translateX(-50%); color: #b83428; }
+.compass-mark.s { bottom: 10px; left: 50%; transform: translateX(-50%); }
+.compass-mark.e { right: 12px; top: 50%; transform: translateY(-50%); }
+.compass-mark.w { left: 12px; top: 50%; transform: translateY(-50%); }
+.compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 170px;
+  margin-top: -85px;
+  margin-left: -7px;
+  pointer-events: none;
+  transition: transform 0.05s ease-out;
+  will-change: transform;
+}
+.compass-dial.locked .compass-needle { transition: transform 0.3s ease-out; }
+.needle-north {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 85px solid #d94236;
+}
+.needle-south {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 85px solid #587063;
+}
+.needle-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: #f1c75b;
+  border: 3px solid #365042;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.compass-info { text-align: center; width: 100%; }
+.compass-angle-badge {
+  font-size: 20px;
+  font-weight: 900;
+  color: #275240;
+  background: #e7f2e1;
+  border: 2px solid #8ab897;
+  border-radius: 20px;
+  padding: 4px 18px;
+  display: inline-block;
+  margin-bottom: 6px;
+  min-width: 150px;
+  font-variant-numeric: tabular-nums;
+}
+.compass-tool.matched .compass-angle-badge { background: #d6f0da; border-color: #2f8f4e; color: #1f6b35; }
+.compass-status {
+  font-size: 13px;
+  font-weight: bold;
+  color: #557968;
+  min-height: 20px;
+  line-height: 1.5;
+}
+.compass-status.near { color: #b3651c; }
+.compass-status.matched {
+  color: #267a3a;
+  animation: pulse 1s infinite alternate;
+}
+.compass-nudge {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.compass-nudge button {
+  min-width: 52px;
+  padding: 8px 10px;
+  border: 2px solid #6f957f;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #2f5445;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.compass-nudge button:hover:not([disabled]) { background: #e7f2e1; }
+.compass-nudge button[disabled] { opacity: 0.4; cursor: default; }
+
+/* 2. Drag and Drop / Tap Eco-Sort */
+.eco-sort-area {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0;
+}
+.eco-progress {
+  align-self: flex-end;
+  font-size: 12px;
+  font-weight: 800;
+  color: #4a6d5b;
+  background: #e7f2e1;
+  border-radius: 12px;
+  padding: 3px 12px;
+}
+.eco-tool.done .eco-progress { background: #2f8f4e; color: #fff; }
+.eco-items-pool {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 70px;
+  padding: 12px;
+  background: #edf3e7;
+  border: 2px dashed #93b39d;
+  border-radius: 10px;
+}
+.eco-tool.done .eco-items-pool { min-height: 0; padding: 6px; }
+.eco-card {
+  background: #ffffff;
+  border: 2px solid #5b8770;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  color: #213d33;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px; /* 터치 목표 크기 */
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.eco-card .eco-icon { font-size: 20px; line-height: 1; }
+.eco-card:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.18);
+}
+.eco-card:active { cursor: grabbing; }
+.eco-card.dragging { opacity: 0.5; }
+.eco-card.selected {
+  border-color: #df8c28;
+  background: #fff4dc;
+  box-shadow: 0 0 0 4px #f1d67a80, 0 5px 12px rgba(0,0,0,0.18);
+  transform: translateY(-3px) scale(1.04);
+}
+.eco-card.dropped {
+  opacity: 0.85;
+  cursor: default;
+  box-shadow: none;
+  padding: 6px 10px;
+  min-height: 36px;
+  font-size: 12px;
+  transform: none;
+  border-color: #9ab7a4;
+  background: #f5f9f1;
+}
+.eco-card.dropped .eco-icon { font-size: 16px; }
+.eco-dropzones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.eco-zone {
+  background: #f4efe2;
+  border: 3px dashed #ad9f80;
+  border-radius: 12px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 130px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.eco-zone:focus-visible { outline: 4px solid #df8c28; outline-offset: 3px; }
+.eco-zone.awaiting { border-color: #df8c28; background: #fff8e8; animation: pulse 0.9s infinite alternate; }
+.eco-zone.drag-over {
+  background: #e1eedb;
+  border-color: #4b895d;
+  transform: scale(1.02);
+}
+.eco-zone.wrong { border-color: #bd3b3b; background: #fbe6e6; }
+.eco-zone.filled { border-style: solid; }
+.eco-tool.done .eco-zone { border-color: #4b895d; background: #e6f2e2; animation: none; }
+.eco-zone h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #3b5a4b;
+}
+.eco-zone p {
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #728072;
+}
+.eco-zone-items {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.eco-feedback {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  min-height: 20px;
+  line-height: 1.5;
+  color: #3b6351;
+}
+.eco-feedback.right { color: #2c7247; }
+.eco-feedback.wrong { color: #bd3b3b; }
+
+/* 좁은 화면(스마트폰 세로, 작은 태블릿 분할 화면) */
+@media (max-width: 480px) {
+  .interactive-tool-box { padding: 12px; margin: 12px 0; }
+  .compass-dial { width: 190px; height: 190px; }
+  .compass-needle { height: 146px; margin-top: -73px; }
+  .needle-north { border-bottom-width: 73px; }
+  .needle-south { border-top-width: 73px; }
+  .compass-angle-badge { font-size: 17px; min-width: 130px; }
+  .eco-dropzones { grid-template-columns: 1fr; }
+  .eco-zone { min-height: 96px; }
+  .eco-card { padding: 9px 12px; font-size: 12px; }
+}

@@ -1,1 +1,1 @@
-{"name":"modeok-dokdo-explorers","version":"1.0.0","private":true,"description":"모덕초등학교 독도 탐험 학습 게임","scripts":{"start":"node server.cjs","test":"node test-adventure.cjs"},"dependencies":{"three":"0.180.0"}}
+{"name":"modeok-dokdo-explorers","version":"1.0.0","private":true,"description":"모덕초등학교 독도 탐험 학습 게임","scripts":{"start":"node server.cjs","test":"node test-adventure.cjs && node test-escape.cjs"},"dependencies":{"three":"0.180.0"}}

@@ -1,0 +1,188 @@
+﻿/* Dokdo Live Cam PIP (Picture-in-Picture) Styling */
+#pip-launcher {
+  position: fixed;
+  top: 72px;
+  right: 18px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(22, 53, 44, 0.88);
+  border: 2px solid #578a72;
+  border-radius: 24px;
+  padding: 8px 16px;
+  color: #fffde8;
+  font-family: 'Malgun Gothic', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  backdrop-filter: blur(8px);
+}
+#pip-launcher:hover {
+  background: rgba(30, 72, 60, 0.95);
+  border-color: #8acfae;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+#pip-launcher .live-dot {
+  width: 10px;
+  height: 10px;
+  background: #ff3344;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #ff2233;
+  animation: pip-pulse 1.6s infinite;
+}
+@keyframes pip-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #ff4455; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Floating Window */
+#pip-window {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 420px;
+  background: #193830f5;
+  border: 2px solid #5d8e78;
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Malgun Gothic', sans-serif;
+  color: #f6faee;
+  transition: opacity 0.2s, transform 0.2s;
+  backdrop-filter: blur(10px);
+}
+#pip-window.pip-hidden {
+  display: none;
+}
+#pip-window.pip-minimized {
+  width: 300px;
+}
+#pip-window.pip-minimized .pip-body,
+#pip-window.pip-minimized .pip-footer {
+  display: none;
+}
+
+/* Header */
+.pip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(14, 34, 28, 0.9);
+  border-bottom: 1px solid #3d6353;
+  cursor: grab;
+  user-select: none;
+}
+.pip-header:active {
+  cursor: grabbing;
+}
+.pip-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+.pip-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pip-btn {
+  background: transparent;
+  border: 1px solid #4d7a66;
+  border-radius: 6px;
+  color: #daebd9;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.pip-btn:hover {
+  background: #376351;
+  color: #ffffff;
+}
+
+/* Video Body */
+.pip-body {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background: #081411;
+}
+.pip-body iframe,
+.pip-body video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Fallback message/overlay */
+.pip-overlay {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(10, 24, 20, 0.75);
+  border: 1px solid #416b58;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #ffd875;
+  pointer-events: none;
+}
+
+/* Footer */
+.pip-footer {
+  padding: 8px 14px;
+  background: rgba(14, 34, 28, 0.85);
+  border-top: 1px solid #2d4f41;
+  font-size: 11px;
+  color: #b7cebf;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pip-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pip-clock {
+  font-family: monospace;
+  color: #92e0be;
+  font-weight: bold;
+}
+
+/* Responsive adjustment */
+@media (max-width: 600px) {
+  #pip-window {
+    width: calc(100% - 24px);
+    right: 12px;
+    bottom: 12px;
+  }
+  #pip-launcher {
+    top: auto;
+    bottom: 68px;
+    right: 12px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
