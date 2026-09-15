@@ -1,13 +1,18 @@
-﻿/* Dokdo Live Cam PIP (Picture-in-Picture) Controller */
+/* Dokdo Live Cam PIP (Picture-in-Picture) Controller */
 (function() {
   const STREAMS = [
     {
-      name: 'KBS 독도 라이브 (동도·서도)',
-      url: 'https://www.youtube-nocookie.com/embed/5n2pX3x8z1E?autoplay=1&mute=1&playsinline=1&rel=0',
-      desc: 'KBS 실시간 독도 파도·날씨 영상'
+      name: 'KBS 독도 파노라마 라이브',
+      url: 'https://www.youtube-nocookie.com/embed/yKu20ueZpl4?autoplay=1&mute=1&playsinline=1&rel=0',
+      desc: 'KBS 24시간 실시간 독도 파노라마 생중계'
     },
     {
-      name: '독도 해상 파노라마 관측',
+      name: 'KBS 이 시각 독도 라이브',
+      url: 'https://www.youtube-nocookie.com/embed/OLDNHQaZFnQ?autoplay=1&mute=1&playsinline=1&rel=0',
+      desc: 'KBS 실시간 독도 생중계 및 기상 상황'
+    },
+    {
+      name: '독도 해상 관측 라이브',
       url: 'https://www.youtube-nocookie.com/embed/live_stream?channel=UC8Wj8G8H6J1E6qH8j8cW20Q&autoplay=1&mute=1&playsinline=1&rel=0',
       desc: '해양수산부 및 방송사 실시간 중계'
     }
@@ -42,6 +47,7 @@
           <span id="pip-stream-title">${STREAMS[0].name}</span>
         </div>
         <div class="pip-controls">
+          <a class="pip-btn" href="https://www.dokdo.re.kr/home/cms/cmsCont.do?cntnts_sn=60" target="_blank" rel="noopener" title="독도종합정보시스템 공식 라이브 새 창 열기" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;line-height:1;">↗</a>
           <button class="pip-btn" id="pip-switch-btn" title="스트림 채널 변경">🔄</button>
           <button class="pip-btn" id="pip-size-btn" title="창 크기 변경">⤢</button>
           <button class="pip-btn" id="pip-min-btn" title="최소화/복원">_</button>

@@ -91,7 +91,10 @@
     Object.assign(utterance, voiceTone(title));
     // Query on every replay too, as browsers may populate voices asynchronously.
     const voices = synth.getVoices();
-    const voice = voices.find(v => /^ko[-_]KR$/i.test(v.lang)) || voices.find(v => /^ko(?:[-_]|$)/i.test(v.lang));
+    // Prioritize Microsoft Edge Neural / Natural voices (e.g. SunHi, InJoon, Natural, Online)
+    const voice = voices.find(v => /^ko/i.test(v.lang) && /(?:natural|online|neural|sunhi|injoon|hyunsu)/i.test(v.name))
+               || voices.find(v => /^ko[-_]KR$/i.test(v.lang))
+               || voices.find(v => /^ko(?:[-_]|$)/i.test(v.lang));
     if (voice) utterance.voice = voice;
     const finish = message => {
       if (id !== serial || currentUtterance !== utterance) return;
@@ -111,31 +114,50 @@
     catch (error) { finish('음성을 시작하지 못했어요. 다시 듣기를 눌러 주세요.'); }
   }
 
-  // 활동 타이틀에 따라 적절한 음성 클립 반환 (1번 방 Faye 음성 + 2~6번 방 Edge Neural 고음질 음성)
+  // 활동 타이틀에 따라 적절한 음성 클립 반환 (모든 음성에 Microsoft Edge Neural 보이스 적용)
   function resolveClip(title) {
     if (!title) return null;
     const nodes = typeof escapeNodes !== 'undefined' ? escapeNodes : {};
     const g = (typeof choice !== 'undefined' && choice.grade) ? choice.grade : '1';
     const gradeSuffix = g === '5' ? 'grade5' : (g === '3' ? 'grade3' : 'grade1');
 
-    // --- 1번 방 (사전 제작 음성) ---
+    // --- 인트로 & 게임 시작 ---
+    if (title.includes('탐험을 시작하자!')) {
+      const char = (typeof choice !== 'undefined' && choice.character) ? choice.character : 'sani';
+      const file = char === 'nari' ? 'intro-nari.mp3' : 'intro-sani.mp3';
+      return { file, label: '🔊 독이의 탐험 시작 안내 듣기', desc: '독이가 기지 출항과 탐험 방법을 안내해요.' };
+    }
+    if (title.includes('탐험 기록을 찾았어!')) {
+      return { file: 'save-found.mp3', label: '🔊 독이의 이전 기록 확인 듣기', desc: '독이가 이전 탐험 기록을 확인해 줘요.' };
+    }
+    if (title.includes('독도 탐험을 완주했어!') || title.includes('독도 탐험 완료증')) {
+      return { file: 'cert-finish.mp3', label: '🔊 독도 수호 완료 축하 듣기', desc: '모덕초 독도 수호대 완주를 축하해요!' };
+    }
+
+    // --- 1번 방 (Microsoft Edge Neural SunHi 음성) ---
     if (title === nodes.welcome?.name || title === '괭이갈매기 길잡이 · 독이' || title === '탐험 안내원') {
-      return { file: 'doki-welcome-faye.mp3', label: '🔊 독이 이야기 듣기', desc: '독이가 이야기하고 있어요. 아래 글을 함께 읽어 봐요.' };
+      return { file: 'doki-welcome.mp3', label: '🔊 독이 이야기 듣기', desc: '독이가 이야기하고 있어요. 아래 글을 함께 읽어 봐요.' };
     }
     if (title === nodes.map?.name || title === '지도 보관함') {
-      return { file: 'room1-map-faye.mp3', label: '🔊 독이의 지도 설명 듣기', desc: '독이가 지도 속 독도의 위치를 설명해 줘요.' };
+      return { file: 'room1-map.mp3', label: '🔊 독이의 지도 설명 듣기', desc: '독이가 지도 속 독도의 위치를 설명해 줘요.' };
     }
     if (title === nodes.scope?.name || title === '탐사 장비함') {
-      return { file: 'room1-scope-faye.mp3', label: '🔊 독이의 쌍안경 설명 듣기', desc: '독이가 쌍안경 사용법을 설명해 줘요.' };
+      return { file: 'room1-scope.mp3', label: '🔊 독이의 쌍안경 설명 듣기', desc: '독이가 쌍안경 사용법을 설명해 줘요.' };
     }
     if (title === nodes.depart?.name || title === '출항 경로 해독판' || title === '출항 준비판') {
-      return { file: `room1-depart-${gradeSuffix}-faye.mp3`, label: `🔊 독이의 출항 문제 안내 듣기 (${g}~${+g + 1}학년)`, desc: '독이가 출항 문제 단서를 읽어 줘요.' };
+      return { file: `room1-depart-${gradeSuffix}.mp3`, label: `🔊 독이의 출항 문제 안내 듣기 (${g}~${+g + 1}학년)`, desc: '독이가 출항 문제 단서를 읽어 줘요.' };
     }
     if (title === '위치 잠금장치' || (typeof EscapeRooms !== 'undefined' && title === EscapeRooms[0]?.lock)) {
-      return { file: 'room1-gate-faye.mp3', label: '🔊 독이의 잠금장치 힌트 듣기', desc: '독이가 단서 조합 힌트를 알려 줘요.' };
+      return { file: 'room1-gate.mp3', label: '🔊 독이의 잠금장치 힌트 듣기', desc: '독이가 단서 조합 힌트를 알려 줘요.' };
     }
-    if (title === '철컥! 비밀 문이 열렸어' && typeof state !== 'undefined' && state.stage === 0) {
-      return { file: 'room1-evidence-faye.mp3', label: '🔊 독이의 단서 해설 듣기', desc: '독이가 지도 단서의 까닭을 설명해 줘요.' };
+    if (title === '철컥! 비밀 문이 열렸어') {
+      if (typeof state !== 'undefined' && state.stage === 0) {
+        return { file: 'room1-evidence.mp3', label: '🔊 독이의 단서 해설 듣기', desc: '독이가 지도 단서의 까닭을 설명해 줘요.' };
+      }
+      return { file: 'room-unlocked.mp3', label: '🔊 비밀 문 열림 해설 듣기', desc: '잠금장치를 풀고 다음 비밀 문이 열렸어요.' };
+    }
+    if (title === '독도 수호 메시지 완성!') {
+      return { file: 'final-signal.mp3', label: '🔊 독도 수호 계획 완성 듣기', desc: '네가 모은 증거로 독도 수호 계획이 완성되었어요.' };
     }
 
     // --- 2번 방: 등대 아저씨 & 지형 잠금장치 ---
@@ -190,6 +212,9 @@
     stop();
     previousModal(title, body, actions);
 
+    // 단순 조작/기능 UI 모달은 불필요한 음성 바와 기계음 발화를 제외
+    if (/가방에서|전체 탐험 지도|출항 준비|새 탐험 시작/i.test(title)) return;
+
     const clip = resolveClip(title);
     const targetBody = activity.querySelector('.activity-body');
     if (!targetBody) return;
@@ -199,7 +224,7 @@
 
     const controls = document.createElement('div');
     controls.className = 'npc-voice-controls';
-    controls.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="npc-voice-play">${clip ? clip.label : '🔊 다시 듣기'}</button><button type="button" id="npc-voice-stop">음성 멈추기</button></div><p id="npc-voice-status" role="status" style="font-size:12px;margin:6px 0 0"></p>`;
+    controls.innerHTML = `<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="npc-voice-play">${clip ? clip.label : '🔊 안내 다시 듣기'}</button><button type="button" id="npc-voice-stop">음성 멈추기</button></div><p id="npc-voice-status" role="status" style="font-size:12px;margin:6px 0 0"></p>`;
 
     if (targetBody) {
       targetBody.prepend(controls);
@@ -207,7 +232,13 @@
       const stopBtn = document.getElementById('npc-voice-stop');
       if (playBtn) playBtn.onclick = replay;
       if (stopBtn) stopBtn.onclick = stop;
-      replay();
+
+      // Microsoft Edge Neural 음성 클립이 준비된 경우에만 자동 재생
+      if (clip) {
+        replay();
+      } else {
+        status('🔊 안내 다시 듣기 버튼을 누르면 설명을 들을 수 있어요.');
+      }
     }
   };
 
@@ -233,10 +264,10 @@
 
       const playBtn = document.getElementById('album-voice-play');
       const stopBtn = document.getElementById('album-voice-stop');
-      if (playBtn) playBtn.onclick = () => playClip('room1-panorama-faye.mp3', '독이가 독도 전경 사진을 설명하고 있어요.', 'album-voice-status');
+      if (playBtn) playBtn.onclick = () => playClip('room1-panorama.mp3', '독이가 독도 전경 사진을 설명하고 있어요.', 'album-voice-status');
       if (stopBtn) stopBtn.onclick = stop;
 
-      playClip('room1-panorama-faye.mp3', '독이가 독도 전경 사진을 설명하고 있어요.', 'album-voice-status');
+      playClip('room1-panorama.mp3', '독이가 독도 전경 사진을 설명하고 있어요.', 'album-voice-status');
     };
   }
 
