@@ -27,11 +27,56 @@ function label(text,x,y,z,scale=1,color='#335d50',parent=scene3d){const c=docume
 const ocean=mesh(new T.PlaneGeometry(340,340),new T.MeshStandardMaterial({color:'#419eb4',roughness:.3,metalness:.2}),0,-.85,0);ocean.rotation.x=-Math.PI/2;ocean.receiveShadow=true;
 for(let i=0;i<46;i++){const x=Math.sin(i*13.7)*83,z=Math.cos(i*9.4)*76;let wave=mesh(new T.PlaneGeometry(1.5+i%4,.05),new T.MeshBasicMaterial({color:'#bee9e7',transparent:true,opacity:.3}),x,-.825,z);wave.rotation.x=-Math.PI/2;}
 const worldSolids=[],markerObjects=[],flags=[],escapeDoors=[];
+// Room footprints: room 2 is a round lighthouse observatory, the others stay rectangular halls.
+const roomShapes=centers.map((c,i)=>i===1?{shape:'circle',x:c[0],z:c[1]+1.5,r:10}:{shape:'rect',x:c[0],z:c[1]});
+const decks=[],worldArcs=[];
+function floorY(x,z){let h=0;for(const d of decks)if(Math.hypot(x-d.x,z-d.z)<d.r)h=Math.max(h,d.h);return h}
+// Angles below follow CylinderGeometry: x=r·sinθ, z=r·cosθ, so θ=0 faces the sealed door at +z.
+function arcWall(x,y,z,rIn,rOut,h,gap,c,parent=scene3d){const s=new T.Shape(),a0=Math.PI*1.5+gap,a1=Math.PI*3.5-gap;s.absarc(0,0,rOut,a0,a1,false);s.absarc(0,0,rIn,a1,a0,true);s.closePath();const g=new T.ExtrudeGeometry(s,{depth:h,bevelEnabled:false,curveSegments:96});g.rotateX(-Math.PI/2);return mesh(g,c,x,y,z,parent)}
+function flatRing(x,y,z,r,tube,c,parent=scene3d,start=0,length=Math.PI*2){const g=new T.TorusGeometry(r,tube,8,96,length);g.rotateZ(start-Math.PI/2);g.rotateX(-Math.PI/2);return mesh(g,c,x,y,z,parent)}
+function buildObservatory(i,cx,cz,shape,wallColor){const C=[shape.x,shape.z],R=shape.r,gap=.369;
+// Round floor with an observatory dial instead of the plank walkway.
+cyl(cx,-.5,C[1],R+.6,1,'#afa188');cyl(cx,-.06,C[1],R+.2,.2,colors[i]);
+for(const r of [3,6,9])flatRing(cx,.06,C[1],r,.035,'#d1c49f');
+for(let k=0;k<8;k++){const a=k*Math.PI/4;rb(cx+Math.sin(a)*4.6,.06,C[1]+Math.cos(a)*4.6,.06,.06,9.2,'#d1c49f').rotation.y=a;}
+// Solid lower wall, a 360° glass band with mullions and dark rims; open to the sky like the other rooms.
+arcWall(cx,0,C[1],R,R+.4,1.3,gap,wallColor);
+flatRing(cx,1.32,C[1],R+.2,.09,'#405e5d',scene3d,gap,Math.PI*2-2*gap);
+flatRing(cx,3.86,C[1],R+.2,.16,'#405e5d',scene3d,gap,Math.PI*2-2*gap);
+const glass=new T.MeshStandardMaterial({color:'#97c7cf',transparent:true,opacity:.14,roughness:.2,depthWrite:false,side:T.DoubleSide});
+mesh(new T.CylinderGeometry(R+.2,R+.2,2.5,96,1,true,gap,Math.PI*2-2*gap),glass,cx,2.55,C[1]);
+for(let k=1;k<24;k++){const a=k*Math.PI/12;if(Math.abs(Math.atan2(Math.sin(a),Math.cos(a)))<gap+.05)continue;rb(cx+Math.sin(a)*(R+.2),2.55,C[1]+Math.cos(a)*(R+.2),.3,2.5,.3,'#56716a').rotation.y=a;}
+for(const side of [-1,1])rb(cx+side*2.7,1.9,cz+11.05,2.3,3.8,.8,wallColor);
+rb(cx,3.65,cz+11.3,3.8,.5,.5,wallColor);
+// Open rafter ring: the centre stays clear so the top-down camera still works.
+for(let k=0;k<12;k++){const a=k*Math.PI/6;rb(cx+Math.sin(a)*8.3,4.4,C[1]+Math.cos(a)*8.3,.2,.16,3.8,'#405e5d').rotation.set(.24,a,0,'YXZ');}
+// Raised observation deck at the back with a railing and two telescopes aimed at the windows.
+const dx=cx,dz=cz-4,dr=4.2,dh=.55;decks.push({x:dx,z:dz,r:dr,h:dh});
+cyl(dx,dh/2,dz,dr,dh,'#b8a67f');cyl(dx,dh-.02,dz,dr-.15,.06,'#e6d9b6');
+rb(cx,.14,dz+dr+.3,3.2,.28,.7,'#c9b98f');
+worldArcs.push({x:dx,z:dz,r:dr-.15,from:Math.PI*.56,to:Math.PI*1.44});
+flatRing(dx,dh+1,dz,dr-.15,.05,'#8d7b58',scene3d,Math.PI*.56,Math.PI*.88);
+for(let k=0;k<=11;k++){const a=Math.PI*.56+k*Math.PI*.08;cyl(dx+Math.sin(a)*(dr-.15),dh+.5,dz+Math.cos(a)*(dr-.15),.04,1,'#8d7b58');}
+for(const a of [Math.PI*.72,Math.PI*1.28]){const x=dx+Math.sin(a)*(dr-.9),z=dz+Math.cos(a)*(dr-.9);cyl(x,dh+.5,z,.06,1,'#5d6d70',scene3d,.08);cyl(x+Math.sin(a)*.18,dh+1.12,z+Math.cos(a)*.18,.09,.6,'#3f5a63',scene3d,.12).rotation.set(1.05,a,0,'YXZ');}
+for(const a of [Math.PI*.25,Math.PI*.75,Math.PI*1.25,Math.PI*1.75]){const x=cx+Math.sin(a)*8.9,z=C[1]+Math.cos(a)*8.9;cyl(x,.55,z,.08,1.1,'#d5ccae');sphere(x,1.15,z,.13,'#fff0ba');}
+for(const side of [-1,1]){const x=cx+side*4.6,z=C[1]+7.4;cyl(x,.25,z,.65,.5,'#c9ad88');sphere(x,.85,z,.72,'#769c6b',scene3d,1,.9,1);}
+rb(cx+7.1,1.35,cz+6.9,.13,2.7,.13,'#b8a17b');panelPhoto('교표.jpg',cx+7.1,2.45,cz+6.9,.8,.8);label('모덕초등학교 제작',cx+7.1,3.15,cz+6.9,.5);
+// Dokdo silhouettes beyond the windows: a learning illustration, not real topography.
+for(const [x,z,r,sy,c] of [[cx-7.5,cz-31,4.6,1.7,'#748a82'],[cx+6.5,cz-27,3.9,1,'#7f9189'],[cx-1,cz-36,1.4,.8,'#8a9a94'],[cx+11,cz-31,1.1,.6,'#8a9a94'],[cx-13,cz-26,1.3,.7,'#8a9a94']]){mesh(new T.DodecahedronGeometry(r,0),c,x,r*sy*.55-.6,z).scale.set(1,sy,.85);}
+sphere(cx-7.5,7.6,cz-31,2,'#7fa078',scene3d,1.4,.5,1.1);sphere(cx+6.5,4.4,cz-27,2,'#86a97c',scene3d,1.5,.4,1.1);
+cyl(cx+6.5,5.6,cz-27,.32,2.4,'#faf2d8');cyl(cx+6.5,6.9,cz-27,.45,.2,'#cf7959');sphere(cx+6.5,7.1,cz-27,.25,'#fff2bd');
+}
+function buildDoor(i,cx,cz){
+for(const side of [-1,1]){rb(cx+side*1.63,1.72,cz+11.3,.26,3.44,.65,'#354f56');}rb(cx,3.48,cz+11.3,3.5,.28,.65,'#354f56');
+const leftDoor=rb(cx-.76,1.65,cz+11.3,1.58,3.3,.24,'#597c7c'),rightDoor=rb(cx+.76,1.65,cz+11.3,1.58,3.3,.24,'#597c7c');for(const side of [-1,1])rb(cx+side*.17,1.6,cz+11.08,.075,.55,.08,'#edcf80');const light=rb(cx,3.50,cz+10.91,.7,.12,.07,'#d6a263');escapeDoors.push({index:i,left:leftDoor,right:rightDoor,cx,light});
+label(i===5?'수호 메시지 전송':'봉인된 문 · 단서 조합',cx,3.1,cz+10.95,.55);
+}
 for(let i=0;i<6;i++){const [cx,cz]=centers[i];D.stages[i].nodes.forEach(n=>{n.localX=n.x;n.localZ=n.z;n.x+=cx;n.z+=cz;n.chapter=i});
+const wallColor=['#bfcab7','#bacbd0','#b7cbbb','#cdbfa8','#bac5ad','#b7c6c4'][i];
+if(roomShapes[i].shape==='circle')buildObservatory(i,cx,cz,roomShapes[i],wallColor);else{
 rb(cx,-.5,cz+1,17,1,27,'#afa188',scene3d,.2);rb(cx,-.06,cz+1,16,.2,26,colors[i],scene3d,.04);rb(cx,.05,cz+1,3,.08,25,'#ece0bd',scene3d,.015);
 for(let j=0;j<15;j++)rb(cx,.11,cz-10+j*1.55,2.9,.08,.045,'#d1c49f',scene3d,.01);
 // Cutaway escape-room architecture: ocean windows, shelves, arches and a sealed exit.
-const wallColor=['#bfcab7','#bacbd0','#b7cbbb','#cdbfa8','#bac5ad','#b7c6c4'][i];
 // Continuous opaque shells close the room perimeter; decorative windows stay inset.
 for(const side of [-1,1])rb(cx+side*7.22,1.9,cz+.5,.42,3.8,24,wallColor);
 rb(cx,1.9,cz+12.2,3.8,3.8,.35,wallColor);
@@ -39,24 +84,23 @@ for(const side of [-1,1]){rb(cx+side*7.15,.65,cz+.5,.38,1.3,24,wallColor);rb(cx+
 for(const dx of [-4.5,4.5]){rb(cx+dx,1.9,cz+11.5,5.7,3.8,.45,wallColor);rb(cx+dx,2.4,cz+11.20,3.5,1.5,.10,'#254954');}
 rb(cx,1.9,cz-10.8,14.6,3.8,.45,wallColor);rb(cx,3.65,cz+11.5,3.5,.5,.45,wallColor);
 rb(cx,3.85,cz+11.4,14.5,.3,.6,'#405e5d');rb(cx,3.85,cz-10.5,14.5,.3,.6,'#405e5d');for(const dx of [-6.9,6.9])rb(cx+dx,1.9,cz-10.5,.48,3.8,.48,'#405e5d');
-for(const side of [-1,1]){rb(cx+side*1.63,1.72,cz+11.3,.26,3.44,.65,'#354f56');}rb(cx,3.48,cz+11.3,3.5,.28,.65,'#354f56');
-const leftDoor=rb(cx-.76,1.65,cz+11.3,1.58,3.3,.24,'#597c7c'),rightDoor=rb(cx+.76,1.65,cz+11.3,1.58,3.3,.24,'#597c7c');for(const side of [-1,1])rb(cx+side*.17,1.6,cz+11.08,.075,.55,.08,'#edcf80');const light=rb(cx,3.50,cz+10.91,.7,.12,.07,'#d6a263');escapeDoors.push({index:i,left:leftDoor,right:rightDoor,cx,light});
-label(i===5?'수호 메시지 전송':'봉인된 문 · 단서 조합',cx,3.1,cz+10.95,.55);
 for(const dx of [-6,6]){rb(cx+dx,.62,cz-5,1.15,1.2,2.1,'#8f8668');for(let k=0;k<4;k++)rb(cx+dx-.35+k*.22,1.40,cz-5,.14,.36+(k%2)*.13,.55,['#ceab79','#708f83','#90a5ac','#b5937b'][k]);}
-const deskLight=new T.PointLight('#ffe6a6',7,12,2);deskLight.position.set(cx,3.3,cz+2);scene3d.add(deskLight);
 // Curved canopy and small exhibition pavilions rather than stacks of blocks.
 for(const dx of [-6.8,6.8])for(const dz of [-8,10]){cyl(cx+dx,.55,cz+dz,.08,1.1,'#d5ccae');sphere(cx+dx,1.15,cz+dz,.13,'#fff0ba');}
 for(const dx of [-6.3,6.3]){cyl(cx+dx,.25,cz+8, .65,.5,'#c9ad88');sphere(cx+dx,.85,cz+8,.72,'#769c6b',scene3d,1,.9,1);}
-label(`${i+1} · ${D.stages[i].name}`,cx,4.5,cz+11,.95);
 // Entry plaque carries the real school emblem within the scene.
 rb(cx-5,1.35,cz-8,.13,2.7,.13,'#b8a17b');panelPhoto('교표.jpg',cx-5,2.45,cz-8,.8,.8);label('모덕초등학교 제작',cx-5,3.15,cz-8,.5);
-for(const n of D.stages[i].nodes){const x=n.x,z=n.z,g=new T.Group();scene3d.add(g);worldSolids.push({x:x-.85,z:z-.55,w:1.7,d:1.5});
+}
+buildDoor(i,cx,cz);
+const deskLight=new T.PointLight('#ffe6a6',7,12,2);deskLight.position.set(cx,3.3,cz+2);scene3d.add(deskLight);
+label(`${i+1} · ${D.stages[i].name}`,cx,4.5,cz+11,.95);
+for(const n of D.stages[i].nodes){const x=n.x,z=n.z,g=new T.Group();g.position.y=floorY(x,z);scene3d.add(g);worldSolids.push({x:x-.85,z:z-.55,w:1.7,d:1.5});
 if(n.kind==='npc'){const npc=makeGullGuide();npc.position.set(x,0,z);npc.rotation.y=Math.PI;g.add(npc)}
 else if(n.kind==='bird'){sphere(x,.38,z,.85,'#9fa79d',g,1,.45,.8);sphere(x,.83,z,.25,'#fffaf0',g,1.3,1,1);sphere(x,1.05,z-.18,.16,'#fffaf0',g);let beak=mesh(new T.ConeGeometry(.085,.23,12),'#eac56a',x,1.04,z-.39,g);beak.rotation.x=-Math.PI/2;for(const side of [-1,1]){sphere(x+side*.10,1.08,z-.305,.035,'#263b46',g);sphere(x+side*.105,1.092,z-.33,.009,'#ffffff',g);}}
 else if(n.kind==='litter'){rb(x,.15,z,.5,.12,.38,'#e9b779',g);}
 else if(n.kind==='chest'){rb(x,.46,z,1.25,.86,.8,'#b98951',g,.1);rb(x,.93,z,1.33,.2,.89,'#e7c173',g);rb(x,.53,z-.43,.16,.25,.05,'#fff0b4',g,.02);}
 else{rb(x,.53,z,1.6,1.05,.8,colors[i],g);rb(x,1.09,z,1.8,.13,.95,'#fcf4df',g);const id=['rocks','landscape','displayLand'].includes(n.id)?'west':['today','bird','care','habitat'].includes(n.id)?'east':null;if(id)panelPhoto('assets/photos/'+(id==='west'?'seodo.jpg':'dongdo-birds.jpg'),x,1.65,z,1.55,1.04,g);else if(n.id==='sea'){rb(x,1.57,z,1.5,.9,.55,'#49a7b5',g);for(let k=0;k<4;k++)cyl(x-.5+k*.3,1.45,z-.32,.035,.5+k%2*.2,'#b9d580',g);}else{const it=n.use||(n.grant||[])[0]||'notebook';panelPhoto(ItemIcons[it],x,1.57,z,.8,.8,g)}}
-const tag=label(n.name,x,2.7,z,.67);markerObjects.push({n,g,tag});}
+const tag=label(n.name,x,2.7+g.position.y,z,.67);markerObjects.push({n,g,tag});}
 const flagGroup=new T.Group();flagGroup.position.set(cx,0,cz+11);scene3d.add(flagGroup);cyl(0,1.4,0,.055,2.8,'#b9ab86',flagGroup);const flag=rb(.48,2.3,0,.95,.65,.05,'#f3cf70',flagGroup);flags.push({group:flagGroup,flag,index:i});flagGroup.visible=false;
 }
 const bridges=[];for(let i=0;i<5;i++){const a=centers[i],b=centers[i+1],dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz);let bridge=rb((a[0]+b[0])/2,-.02,(a[1]+b[1])/2,3.3,.2,len,'#e2cfa6');bridge.rotation.y=Math.atan2(dx,dz);bridges.push({a,b,to:i+1});}
@@ -113,23 +157,26 @@ canvas3d.onpointerdown=e=>{if(!active||activity.open||photoAlbum.open||e.pointer
 canvas3d.addEventListener('wheel',e=>{if(!active||activity.open||photoAlbum.open)return;e.preventDefault();const delta=Math.sign(e.deltaY)*.65;if(!delta)return;if(mode===1){if(delta>0){orbitDistance=2;setMode(2)}}else{orbitDistance=Math.max(.8,Math.min(10,orbitDistance+delta));if(orbitDistance<=1.1)setMode(1);else setMode(2)}},{passive:false});
 const navPanel=document.createElement('button');navPanel.id='live-minimap';navPanel.setAttribute('aria-label','현재 위치가 표시된 전체 지도 열기');game.append(navPanel);
 function mapPoint(x,z){return [(x+32)*9,(28-z)*6.8]}
-function worldMapSVG(big=false){const p=mapPoint(px,pz);return `<svg viewBox="0 0 576 420" role="img" aria-label="전체 6개 구역 지도. 노란 화살표가 현재 위치와 바라보는 방향입니다."><rect width="576" height="420" rx="20" fill="#c1e0e4"/><text x="550" y="25" text-anchor="end" fill="#407279" font-size="18">↑ N</text>${bridges.map(b=>{let a=mapPoint(...b.a),c=mapPoint(...b.b);return `<path d="M${a[0]} ${a[1]}L${c[0]} ${c[1]}" stroke="#eddbb3" stroke-width="22"/>`}).join('')}${centers.map(([x,z],i)=>{let a=mapPoint(x,z+1);return `<rect x="${a[0]-66}" y="${a[1]-84}" width="132" height="170" rx="19" fill="${i<=state.stage?colors[i]:'#a9b7b2'}" stroke="${i===state.stage?'#456c4c':'#ecf5e7'}" stroke-width="4"/><text x="${a[0]}" y="${a[1]-56}" text-anchor="middle" fill="#254e40" font-size="${big?13:20}">${big?D.stages[i].name:i+1}</text>${D.stages[i].nodes.map(n=>{let b=mapPoint(n.x,n.z);return `<circle cx="${b[0]}" cy="${b[1]}" r="${big?6:5}" fill="${state.done.includes(n.id)?'#edf7d7':'#fff8e6'}" stroke="#557656" stroke-width="2"/>`}).join('')}${i>state.stage?`<text x="${a[0]}" y="${a[1]+22}" text-anchor="middle" fill="#4e6560" font-size="17">잠김</text>`:''}`}).join('')}<g transform="translate(${p[0]},${p[1]}) rotate(${yaw*180/Math.PI})"><circle r="15" fill="#fff" opacity=".8"/><path d="M0 -20L12 12L0 6L-12 12Z" fill="#f3a92e" stroke="#674d25" stroke-width="3"/></g>${big?`<text x="${p[0]+17}" y="${p[1]-12}" fill="#543f22" font-size="14" font-weight="bold">나</text>`:''}</svg>`}
-map=function(){let s=D.stages[state.stage];modal('전체 탐험 지도',`<div id="full-world-map">${worldMapSVG(true)}</div><p class="map-legend">▲ 노란 화살표: 나의 위치·방향　○ 조사 지점　회색: 아직 열리지 않은 구역</p><p class="note">학습용 가상 공간의 전체 지도입니다. 실제 독도의 지형·방위·거리와 다릅니다.</p><div class="world-zone-buttons">${D.stages.map((v,i)=>`<button data-zone="${i}" ${i>state.stage?'disabled':''}>${i+1}. ${v.name}${i<state.stage?' · 다시 방문':i===state.stage?' · 현재 임무로 돌아가기':''}</button>`).join('')}</div><p class="note">이전 방은 다시 관찰할 수 있어. 탐험을 계속하려면 ‘현재 임무로 돌아가기’를 눌러 줘.</p><h3>현재 임무의 조사 지점</h3><div class="node-map">${s.nodes.map(n=>`<button data-nav="${n.id}">${state.done.includes(n.id)?'✓ ':''}${n.name}</button>`).join('')}<button data-nav="gate">출구 잠금장치</button></div>`,[['지도를 접기',closeModal]]);activity.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>{const c=centers[+b.dataset.zone];px=c[0];pz=c[1]-4;yaw=0;closeModal()});activity.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{const c=centers[state.stage],n=b.dataset.nav==='gate'?{x:c[0],z:c[1]+11}:s.nodes.find(n=>n.id===b.dataset.nav);px=n.x;pz=n.z-1.6;yaw=0;closeModal()});};$('#map-button').onclick=map;navPanel.onclick=map;
+function worldMapSVG(big=false){const p=mapPoint(px,pz);return `<svg viewBox="0 0 576 420" role="img" aria-label="전체 6개 구역 지도. 노란 화살표가 현재 위치와 바라보는 방향입니다."><rect width="576" height="420" rx="20" fill="#c1e0e4"/><text x="550" y="25" text-anchor="end" fill="#407279" font-size="18">↑ N</text>${bridges.map(b=>{let a=mapPoint(...b.a),c=mapPoint(...b.b);return `<path d="M${a[0]} ${a[1]}L${c[0]} ${c[1]}" stroke="#eddbb3" stroke-width="22"/>`}).join('')}${centers.map(([x,z],i)=>{let a=mapPoint(x,z+1);const shape=roomShapes[i],fill=i<=state.stage?colors[i]:'#a9b7b2',stroke=i===state.stage?'#456c4c':'#ecf5e7';let body;if(shape.shape==='circle'){const c=mapPoint(shape.x,shape.z);body=`<ellipse cx="${c[0]}" cy="${c[1]}" rx="${shape.r*9}" ry="${shape.r*6.8}" fill="${fill}" stroke="${stroke}" stroke-width="4"/>`}else body=`<rect x="${a[0]-66}" y="${a[1]-84}" width="132" height="170" rx="19" fill="${fill}" stroke="${stroke}" stroke-width="4"/>`;return body+`<text x="${a[0]}" y="${a[1]-56}" text-anchor="middle" fill="#254e40" font-size="${big?13:20}">${big?D.stages[i].name:i+1}</text>${D.stages[i].nodes.map(n=>{let b=mapPoint(n.x,n.z);return `<circle cx="${b[0]}" cy="${b[1]}" r="${big?6:5}" fill="${state.done.includes(n.id)?'#edf7d7':'#fff8e6'}" stroke="#557656" stroke-width="2"/>`}).join('')}${i>state.stage?`<text x="${a[0]}" y="${a[1]+22}" text-anchor="middle" fill="#4e6560" font-size="17">잠김</text>`:''}`}).join('')}<g transform="translate(${p[0]},${p[1]}) rotate(${yaw*180/Math.PI})"><circle r="15" fill="#fff" opacity=".8"/><path d="M0 -20L12 12L0 6L-12 12Z" fill="#f3a92e" stroke="#674d25" stroke-width="3"/></g>${big?`<text x="${p[0]+17}" y="${p[1]-12}" fill="#543f22" font-size="14" font-weight="bold">나</text>`:''}</svg>`}
+map=function(){let s=D.stages[state.stage];modal('전체 탐험 지도',`<div id="full-world-map">${worldMapSVG(true)}</div><p class="map-legend">▲ 노란 화살표: 나의 위치·방향　○ 조사 지점　회색: 아직 열리지 않은 구역</p><p class="note">학습용 가상 공간의 전체 지도입니다. 실제 독도의 지형·방위·거리와 다릅니다.</p><div class="world-zone-buttons">${D.stages.map((v,i)=>`<button data-zone="${i}" ${i>state.stage&&!freeRoam?'disabled':''}>${i+1}. ${v.name}${i<state.stage?' · 다시 방문':i===state.stage?' · 현재 임무로 돌아가기':''}</button>`).join('')}</div><p class="note">이전 방은 다시 관찰할 수 있어. 탐험을 계속하려면 ‘현재 임무로 돌아가기’를 눌러 줘.</p><h3>현재 임무의 조사 지점</h3><div class="node-map">${s.nodes.map(n=>`<button data-nav="${n.id}">${state.done.includes(n.id)?'✓ ':''}${n.name}</button>`).join('')}<button data-nav="gate">출구 잠금장치</button></div>`,[['지도를 접기',closeModal]]);activity.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>{const c=centers[+b.dataset.zone];px=c[0];pz=c[1]-4;yaw=0;closeModal()});activity.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{const c=centers[state.stage],n=b.dataset.nav==='gate'?{x:c[0],z:c[1]+11}:s.nodes.find(n=>n.id===b.dataset.nav);px=n.x;pz=n.z-1.6;yaw=0;closeModal()});};$('#map-button').onclick=map;navPanel.onclick=map;
 function zoneAt(x,z){return centers.reduce((best,c,i)=>Math.hypot(x-c[0],z-c[1])<Math.hypot(x-centers[best][0],z-centers[best][1])?i:best,0)}
 function inBridge(x,z,b){const dx=b.b[0]-b.a[0],dz=b.b[1]-b.a[1],len=dx*dx+dz*dz,t=Math.max(0,Math.min(1,((x-b.a[0])*dx+(z-b.a[1])*dz)/len));return Math.hypot(x-b.a[0]-t*dx,z-b.a[1]-t*dz)<1.35}
-canWalk=function(x,z){return centers.some((c,i)=>i<=state.stage&&Math.abs(x-c[0])<6.5&&z>c[1]-10&&z<c[1]+10.4)&&!worldSolids.some(c=>x>c.x-.22&&x<c.x+c.w+.22&&z>c.z-.22&&z<c.z+c.d+.22)};
+// Hidden test cheat: typing "dokdo" while exploring toggles free roaming across every zone (walls, locks and the map are all bypassed).
+let freeRoam=false,cheatBuffer='';
+addEventListener('keydown',e=>{if(!active||activity.open||photoAlbum.open||e.key.length!==1)return;cheatBuffer=(cheatBuffer+e.key.toLowerCase()).slice(-5);if(cheatBuffer!=='dokdo')return;cheatBuffer='';freeRoam=!freeRoam;toast(freeRoam?'테스트 모드 켬 · 모든 구역을 자유롭게 이동할 수 있어 (dokdo로 해제)':'테스트 모드 해제');});
+canWalk=function(x,z){return (freeRoam||centers.some((c,i)=>{if(i>state.stage)return false;const s=roomShapes[i];return s.shape==='circle'?Math.hypot(x-s.x,z-s.z)<s.r-.75:Math.abs(x-c[0])<6.5&&z>c[1]-10&&z<c[1]+10.4}))&&!worldSolids.some(c=>x>c.x-.22&&x<c.x+c.w+.22&&z>c.z-.22&&z<c.z+c.d+.22)&&!worldArcs.some(a=>{if(Math.abs(Math.hypot(x-a.x,z-a.z)-a.r)>.35)return false;const t=(Math.atan2(x-a.x,z-a.z)-a.from+Math.PI*4)%(Math.PI*2);return t<(a.to-a.from+Math.PI*4)%(Math.PI*2)})};
 buildStations=function(){escapeDoors.forEach(o=>{const opened=(state.seals||[]).includes(o.index)||o.index<state.stage;o.left.position.x=o.cx-.76-(opened?1.45:0);o.right.position.x=o.cx+.76+(opened?1.45:0);o.light.material=mat(opened?'#80cf9b':'#e5b56c')});markerObjects.forEach(o=>{o.tag.material.opacity=o.n.chapter<=state.stage?1:.5;const done=state.done.includes(o.n.id);o.g.traverse(m=>{if(m.isMesh&&m.material)m.visible=!(o.n.id==='litter'&&done)})});flags.forEach(o=>o.flag.material=mat(o.index===state.stage&&D.gate(state)?'#ffd56b':'#aac0ae'))};
 buildWorld=function(){const c=centers[state.stage];px=c[0];pz=c[1]-4;yaw=0;pitch=-.04;buildStations();if(playerKind!==choice.character){scene3d.remove(player3d);player3d=makeAvatar(choice.character);scene3d.add(player3d);playerKind=choice.character}};
 function resize3d(){renderer3d.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.fov=cam.aspect<1?85:58;cam.updateProjectionMatrix()}resize=resize3d;addEventListener('resize',resize3d);resize3d();
-let lastMapTime=0;
+let lastMapTime=0,playerY=0;
 loop=function(t){if(!active)return;const dt=Math.min((t-last)/1000||0,.045);last=t;let moving=false;if(!activity.open&&!photoAlbum.open){const fw=(keys.has('w')||keys.has('arrowup')?1:0)-(keys.has('s')||keys.has('arrowdown')?1:0),side=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0),norm=Math.hypot(fw,side)||1;moving=!!(fw||side);yaw-=((keys.has('r')?1:0)-(keys.has('q')?1:0))*dt*1.4;const speed=keys.has('shift')?5.8:3.5;let nx=px+(Math.sin(yaw)*fw-Math.cos(yaw)*side)/norm*dt*speed,nz=pz+(Math.cos(yaw)*fw+Math.sin(yaw)*side)/norm*dt*speed;if(canWalk(nx,pz))px=nx;if(canWalk(px,nz))pz=nz;}
 const dx=px-previousX,dz=pz-previousZ;
 if(mode===1||cameraLocked)avatarYaw=yaw;
 else if(moving&&Math.hypot(dx,dz)>.0001&&Math.hypot(dx,dz)<1){const target=Math.atan2(dx,dz);avatarYaw+=Math.atan2(Math.sin(target-avatarYaw),Math.cos(target-avatarYaw))*Math.min(1,dt*14)}
 previousX=px;previousZ=pz;
-player3d.position.set(px,0,pz);player3d.rotation.y=avatarYaw;player3d.visible=mode!==1;player3d.userData.legs.forEach((a,i)=>a.rotation.x=moving?Math.sin(t*.009+i*Math.PI)*.45:0);player3d.userData.arms.forEach((a,i)=>a.rotation.x=moving?-Math.sin(t*.009+i*Math.PI)*.32:0);
-const dir=new T.Vector3(Math.sin(yaw),0,Math.cos(yaw));if(mode===1){cam.position.set(px,2.12,pz);cam.lookAt(px+dir.x*6,2.12+Math.tan(pitch)*6,pz+dir.z*6)}else if(mode===2){const elevation=.28-pitch,horizontal=orbitDistance*Math.cos(elevation);cam.position.set(px-dir.x*horizontal,1.55+orbitDistance*Math.sin(elevation),pz-dir.z*horizontal);cam.lookAt(px,1.55,pz)}else{cam.position.set(px-dir.x*5,11,pz-dir.z*5);cam.lookAt(px,0.9,pz)}
-if(mode!==1){const room=centers[zoneAt(px,pz)],target=new T.Vector3(px,mode===3?.9:1.55,pz),offset=cam.position.clone().sub(target);let fraction=1;for(const [axis,low,high] of [['x',room[0]-6.65,room[0]+6.65],['z',room[1]-10.15,room[1]+10.55],['y',.45,30]]){if(offset[axis]>0)fraction=Math.min(fraction,(high-target[axis])/offset[axis]);else if(offset[axis]<0)fraction=Math.min(fraction,(low-target[axis])/offset[axis]);}cam.position.copy(target).addScaledVector(offset,Math.max(.03,fraction));cam.lookAt(target);player3d.visible=cam.position.distanceTo(target)>1.15;}
+playerY+=(floorY(px,pz)-playerY)*Math.min(1,dt*9);player3d.position.set(px,playerY,pz);player3d.rotation.y=avatarYaw;player3d.visible=mode!==1;player3d.userData.legs.forEach((a,i)=>a.rotation.x=moving?Math.sin(t*.009+i*Math.PI)*.45:0);player3d.userData.arms.forEach((a,i)=>a.rotation.x=moving?-Math.sin(t*.009+i*Math.PI)*.32:0);
+const dir=new T.Vector3(Math.sin(yaw),0,Math.cos(yaw));if(mode===1){cam.position.set(px,2.12+playerY,pz);cam.lookAt(px+dir.x*6,2.12+playerY+Math.tan(pitch)*6,pz+dir.z*6)}else if(mode===2){const elevation=.28-pitch,horizontal=orbitDistance*Math.cos(elevation);cam.position.set(px-dir.x*horizontal,1.55+playerY+orbitDistance*Math.sin(elevation),pz-dir.z*horizontal);cam.lookAt(px,1.55+playerY,pz)}else{cam.position.set(px-dir.x*5,11+playerY,pz-dir.z*5);cam.lookAt(px,0.9+playerY,pz)}
+if(mode!==1&&!freeRoam){const zone=zoneAt(px,pz),room=centers[zone],shape=roomShapes[zone],target=new T.Vector3(px,(mode===3?.9:1.55)+playerY,pz),offset=cam.position.clone().sub(target);let fraction=1;const bounds=shape.shape==='circle'?[['y',.45,30]]:[['x',room[0]-6.65,room[0]+6.65],['z',room[1]-10.15,room[1]+10.55],['y',.45,30]];for(const [axis,low,high] of bounds){if(offset[axis]>0)fraction=Math.min(fraction,(high-target[axis])/offset[axis]);else if(offset[axis]<0)fraction=Math.min(fraction,(low-target[axis])/offset[axis]);}if(shape.shape==='circle'){const tx=target.x-shape.x,tz=target.z-shape.z,rr=shape.r-.45,a=offset.x*offset.x+offset.z*offset.z,b=2*(tx*offset.x+tz*offset.z),c=tx*tx+tz*tz-rr*rr,disc=b*b-4*a*c;if(a>1e-6&&disc>=0){const t=(-b+Math.sqrt(disc))/(2*a);if(t>=0)fraction=Math.min(fraction,t)}}cam.position.copy(target).addScaledVector(offset,Math.max(.03,fraction));cam.lookAt(target);player3d.visible=cam.position.distanceTo(target)>1.15;}
 hands.visible=mode===1;if(selected!==heldId){heldId=selected;heldPlane.visible=!!selected;if(selected){heldPlane.material.map=tex(ItemIcons[selected]);heldPlane.material.needsUpdate=true}}heldPlane.visible=!!selected;
 const c=centers[state.stage],all=[...D.stages.slice(0,state.stage+1).flatMap(s=>s.nodes),{id:'gate',name:state.stage===5?'수호 메시지 장치':'출구 잠금장치',x:c[0],z:c[1]+11}];nearest=null;let dist=2.9;for(const n of all){let d=Math.hypot(n.x-px,n.z-pz);if(d<dist){nearest=n;dist=d}}
 $('.interact').hidden=!nearest||activity.open||photoAlbum.open;$('.interact').textContent=nearest?`E · ${nearest.id==='gate'?'출구 잠금장치 조사':state.done.includes(nearest.id)?'다시 관찰하기':nearest.use?(selected===nearest.use?D.items[nearest.use][1]+' 사용하기':D.items[nearest.use][1]+' 꺼내는 방법'):'조사하기'}`:'';$('#target').textContent=nearest&&!activity.open?nearest.name:'';$('#heading').textContent=`${['북 N','동 E','남 S','서 W'][((Math.round(yaw/(Math.PI/2))%4)+4)%4]} · ${D.stages[zoneAt(px,pz)].name}`;

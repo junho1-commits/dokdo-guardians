@@ -16,9 +16,9 @@ const stages=[
  {id:'scope',name:'탐사 장비함',kind:'chest',x:4,z:3,grant:['scope'],requires:['notebook'],text:'쌍안경을 얻었어! 가방에서 도구를 선택한 다음, 관찰할 대상에 다가가 사용해 봐.'},
  {id:'depart',name:'출항 준비판',kind:'board',x:0,z:7,requires:['map','scope'],use:'map',grant:[],puzzle:'departure'}]},
  {name:'지형 전망대',subtitle:'지도와 풍경을 연결하다',color:'#859178',goal:'쌍안경으로 바위섬을 관찰하고, 지도와 지형 기록으로 독도 탐사 경로를 완성해 줘.',nodes:[
- {id:'rocks',name:'동도·서도 관찰 지점',kind:'scope',x:-4,z:2,use:'scope',grant:['land'],text:'쌍안경 관찰 성공! 독도는 동도와 서도 두 주요 섬과 주변 바위섬으로 이루어져 있어. 바다 위로 드러난 지형을 그림으로 기록했어.'},
- {id:'route',name:'항로 지도 작업대',kind:'board',x:3,z:4,requires:['land'],use:'map',grant:[],puzzle:'route'},
- {id:'landscape',name:'지형 전시 작업대',kind:'board',x:-2,z:7,requires:['land'],use:'land',grant:['camera'],puzzle:'landscape'}]},
+ {id:'rocks',name:'동도·서도 관찰 지점',kind:'scope',x:-2,z:-5.4,use:'scope',grant:['land'],text:'쌍안경 관찰 성공! 독도는 동도와 서도 두 주요 섬과 주변 바위섬으로 이루어져 있어. 바다 위로 드러난 지형을 그림으로 기록했어.'},
+ {id:'route',name:'항로 지도 작업대',kind:'board',x:3.5,z:3.5,requires:['land'],use:'map',grant:[],puzzle:'route'},
+ {id:'landscape',name:'지형 전시 작업대',kind:'board',x:-3.5,z:5,requires:['land'],use:'land',grant:['camera'],puzzle:'landscape'}]},
  {name:'생태 관찰소',subtitle:'잡지 않고, 바라보고 기록하기',color:'#4b8c77',goal:'카메라로 새를, 쌍안경으로 해조숲 전시를 관찰하고 생물의 삶터를 연결해 줘.',nodes:[
  {id:'bird',name:'바닷새 관찰 구역',kind:'bird',x:-4,z:2,use:'camera',grant:['bird'],text:'찰칵! 관찰 구역에서 바닷새 모습을 기록했어. 새에게 다가가거나 먹이를 주지 않고 관찰했어. 이 사진은 생물 전시의 단서야.'},
  {id:'sea',name:'해조숲 가상 관찰창',kind:'sea',x:4,z:3,use:'scope',grant:['sea'],text:'가상 관찰창 너머에 해조숲이 보여! 독도 연안에는 해조류가 자라는 곳이 있고 다양한 해양 생물이 살아. 이 창은 수중 생태를 배우는 가상 장치야.'},
