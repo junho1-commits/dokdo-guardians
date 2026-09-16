@@ -1,10 +1,20 @@
 /* Background music manager with smooth audio ducking when NPC speaks */
 (()=>{
-  const BGM_SRC = 'assets/bgm/the_mountain-kids-522483.mp3';
+  const ROOM_TRACKS = [
+    'assets/bgm/the_mountain-kids-522483.mp3', // 1번 방: 출항 기지 (The Mountain Kids Adventure)
+    'assets/bgm/room2-observation.mp3',        // 2번 방: 동도·서도 지형 관측실 (Windswept)
+    'assets/bgm/room3-ecology.mp3',            // 3번 방: 해조숲 생태 연구실 (Silver Blue Light)
+    'assets/bgm/room4-history.mp3',            // 4번 방: 봉인된 역사 기록실 (Danse Morialta)
+    'assets/bgm/room5-action.mp3',             // 5번 방: 해안 보호 작전실 (Carefree)
+    'assets/bgm/room6-telecom.mp3'             // 6번 방: 독도 수호 통신실 (Enchanted Journey)
+  ];
   const NORMAL_VOL = 0.35;
   const DUCK_VOL = 0.07;
   
-  const audio = new Audio(BGM_SRC);
+  let currentRoom = 0;
+  let switching = false;
+
+  const audio = new Audio(ROOM_TRACKS[0]);
   audio.loop = true;
   audio.preload = 'auto';
   audio.volume = NORMAL_VOL;
@@ -32,10 +42,52 @@
     fadeAnimation = requestAnimationFrame(step);
   }
 
+  async function setRoom(roomIndex, smooth = true) {
+    const idx = Math.max(0, Math.min(ROOM_TRACKS.length - 1, Number(roomIndex) || 0));
+    if (idx === currentRoom && audio.src && !audio.src.endsWith('about:blank')) return;
+    currentRoom = idx;
+    const targetSrc = new URL(ROOM_TRACKS[idx], document.baseURI).href;
+    if (audio.src === targetSrc) return;
+
+    if (!enabled || audio.paused) {
+      audio.src = targetSrc;
+      return;
+    }
+
+    if (switching) return;
+    switching = true;
+
+    if (smooth) {
+      fadeTo(0, 350);
+      setTimeout(async () => {
+        audio.src = targetSrc;
+        try {
+          await audio.play();
+          const targetVol = isDucked ? DUCK_VOL : NORMAL_VOL;
+          fadeTo(targetVol, 400);
+        } catch (e) {
+        } finally {
+          switching = false;
+        }
+      }, 370);
+    } else {
+      audio.src = targetSrc;
+      try {
+        await audio.play();
+      } catch (e) {
+      } finally {
+        switching = false;
+      }
+    }
+  }
+
   async function play() {
     enabled = true;
     updateUI();
     try {
+      if (!audio.src || audio.src.endsWith('about:blank')) {
+        audio.src = new URL(ROOM_TRACKS[currentRoom], document.baseURI).href;
+      }
       const target = isDucked ? DUCK_VOL : NORMAL_VOL;
       audio.volume = target;
       await audio.play();
@@ -116,6 +168,8 @@
     toggle,
     duck,
     unduck,
+    setRoom,
+    get currentRoom() { return currentRoom; },
     get isPlaying() { return !audio.paused && enabled; },
     get isDucked() { return isDucked; },
     updateUI
