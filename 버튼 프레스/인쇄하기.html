@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>58mm 독도의 날 버튼 도안 인쇄소 (8종 모음)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "Pretendard", sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      padding: 24px;
+    }
+    .no-print {
+      max-width: 840px;
+      margin: 0 auto 24px;
+      background: #ffffff;
+      padding: 24px 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .no-print h1 { font-size: 26px; color: #0f172a; margin-bottom: 8px; }
+    .no-print p { font-size: 14.5px; color: #64748b; margin-bottom: 18px; line-height: 1.6; }
+    .btn-print {
+      background: #2563eb;
+      color: #ffffff;
+      border: 0;
+      padding: 13px 32px;
+      font-size: 16px;
+      font-weight: 800;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+      transition: all 0.15s ease;
+    }
+    .btn-print:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+    /* A4 실제 인쇄 레이아웃 */
+    .print-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 20px;
+      background: #ffffff;
+      padding: 15mm;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      page-break-after: always;
+      break-after: page;
+    }
+    .print-sheet:last-child {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    .sheet-header {
+      text-align: center;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 8px;
+      margin-bottom: 10mm;
+    }
+    .sheet-header h2 { font-size: 17pt; font-weight: 900; color: #0f172a; }
+    .sheet-header p { font-size: 8.5pt; color: #475569; margin-top: 4px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 70mm);
+      gap: 14mm 24mm;
+      justify-content: center;
+      align-items: center;
+    }
+    .item {
+      width: 70mm;
+      height: 70mm;
+      position: relative;
+      text-align: center;
+    }
+    .badge-img {
+      width: 70mm;
+      height: 70mm;
+      border-radius: 50%;
+      object-fit: contain;
+      display: block;
+      /* 외곽 자르는 선 가이드 */
+      border: 1px dashed #ef4444;
+    }
+    .item-caption {
+      font-size: 8.5pt;
+      font-weight: bold;
+      color: #334155;
+      margin-top: 2mm;
+      display: block;
+      white-space: nowrap;
+    }
+
+    @media print {
+      body { background: #fff !important; padding: 0 !important; }
+      .no-print { display: none !important; }
+      .print-sheet {
+        box-shadow: none !important;
+        padding: 10mm 15mm !important;
+        margin: 0 !important;
+        width: 100% !important;
+        min-height: auto !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print">
+    <h1>🇰🇷 58mm 독도의 날 버튼 프레스 원형 도안집 (8종)</h1>
+    <p>
+      독도의 자연, 역사, 생태(강치, 해국, 등대, 독립문바위)를 조사하여 직접 그린 <b>순수 2D 원형 도안 8종</b>입니다.<br>
+      외곽 빨간 점선(지름 70mm)을 따라 오려내면 58mm 버튼 프레스 기계로 완벽하게 제작됩니다. (A4 총 2페이지 구성)
+    </p>
+    <button class="btn-print" onclick="window.print()">🖨️ A4 1:1 실제 크기로 인쇄하기</button>
+  </div>
+
+  <!-- [1페이지: 자연 풍경 & 감성 에디션 4종] -->
+  <div class="print-sheet">
+    <div class="sheet-header">
+      <h2>10월 25일 독도의 날 · 58mm 버튼 도안집 [1페이지: 자연 & 감성]</h2>
+      <p>※ 인쇄 설정: <b>[배율: 100% (실제 크기)]</b> / 외곽 빨간 점선(70mm)을 따라 오려내어 제작하세요.</p>
+    </div>
+
+    <div class="grid">
+      <div class="item">
+        <img src="버튼도안1_수채화_물그림자_58mm.jpg" alt="도안 1" class="badge-img">
+        <span class="item-caption">1. 수채화 & 물그림자 ("동해의 푸른 보석, 독도")</span>
+      </div>
+      <div class="item">
+        <img src="버튼도안2_동해일출_황금바다_58mm.jpg" alt="도안 2" class="badge-img">
+        <span class="item-caption">2. 황금빛 일출 & 바다 ("대한민국 아침을 여는 섬, 독도")</span>
+      </div>
+      <div class="item">
+        <img src="버튼도안3_청량하늘_포스터_58mm.jpg" alt="도안 3" class="badge-img">
+        <span class="item-caption">3. 청량한 하늘 & 입체 타이포 ("독도의 날")</span>
+      </div>
+      <div class="item">
+        <img src="버튼도안4_리본엠블럼_독도사랑_58mm.jpg" alt="도안 4" class="badge-img">
+        <span class="item-caption">4. 리본 엠블럼 ("우리 땅 독도 사랑")</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- [2페이지: 생태 & 역사 & 랜드마크 에디션 4종] -->
+  <div class="print-sheet">
+    <div class="sheet-header">
+      <h2>10월 25일 독도의 날 · 58mm 버튼 도안집 [2페이지: 생태 & 역사]</h2>
+      <p>※ 독도 생태(강치, 해국), 랜드마크(등대, 독립문바위), 대한제국 칙령 제41호 테마 도안입니다.</p>
+    </div>
+
+    <div class="grid">
+      <div class="item">
+        <img src="버튼도안5_독도강치_58mm.jpg" alt="도안 5" class="badge-img">
+        <span class="item-caption">5. 독도의 상징 강치 ("기억할게 독도 강치야")</span>
+      </div>
+      <div class="item">
+        <img src="버튼도안6_독도등대_58mm.jpg" alt="도안 6" class="badge-img">
+        <span class="item-caption">6. 희망의 빛 독도 등대 ("동해를 비추는 희망, 독도 등대")</span>
+      </div>
+      <div class="item">
+        <img src="버튼도안7_독도해국_58mm.jpg" alt="도안 7" class="badge-img">
+        <span class="item-caption">7. 바위틈 야생화 ("바위틈에 피어난 희망, 독도 해국")</span>
+      </div>
+      <div class="item">
+        <img src="버튼도안8_독립문바위_칙령제41호_58mm.jpg" alt="도안 8" class="badge-img">
+        <span class="item-caption">8. 명소와 역사 ("대한제국 칙령 제41호 · 독도의 날")</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

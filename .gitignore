@@ -10,4 +10,10 @@ patch-escape.cjs
 wire-icons.cjs
 .claude/
 
+# Large video renders (>100MB exceeds GitHub push limit)
+*.mp4
+모션그래픽/output/
+*.zip
+
+
 

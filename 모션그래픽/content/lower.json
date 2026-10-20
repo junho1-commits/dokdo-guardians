@@ -1,0 +1,127 @@
+{
+  "id": "lower",
+  "title": "안녕, 독도야!",
+  "subtitle": "나리와 산이의 독도 여행",
+  "audience": "저학년(1~3학년)",
+  "tempo": 0.95,
+  "bgm": "the_mountain-kids-522483.mp3",
+  "bgmVolume": 0.13,
+  "subtitleSize": 54,
+  "scenes": [
+    {
+      "type": "title",
+      "lines": [
+        {"who": "N", "text": "안녕, 친구들! 나는 해바라기처럼 밝은 나리야!", "emo": "happy"},
+        {"who": "S", "text": "나는 산처럼 씩씩한 산이야! 반가워!", "emo": "happy"},
+        {"who": "N", "text": "오늘은 우리가 아주 특별한 섬을 소개해 줄 거야.", "emo": "happy"},
+        {"who": "S", "text": "그 섬의 이름은 바로… 독도!", "say": "그 섬의 이름은 바로, 독도!", "emo": "toneup"}
+      ]
+    },
+    {
+      "type": "map",
+      "heading": "독도는 어디에 있을까?",
+      "lines": [
+        {"who": "N", "text": "독도는 어디에 있을까? 우리나라 동쪽 바다, 동해를 보자.", "step": "korea", "emo": "normal"},
+        {"who": "S", "text": "동해에는 울릉도라는 섬이 있어. 울릉도에서 배를 타고 동쪽으로 더 가면…", "say": "동해에는 울릉도라는 섬이 있어. 울릉도에서 배를 타고 동쪽으로 더 가면,", "step": "ulleung", "emo": "normal"},
+        {"who": "N", "text": "짠! 독도가 나와! 독도는 우리나라 가장 동쪽 끝에 있는 섬이야.", "step": "dokdo", "emo": "toneup"},
+        {"who": "S", "text": "날씨가 맑은 날에는 울릉도에서 독도가 눈으로 보인대!", "step": "see", "emo": "happy"}
+      ]
+    },
+    {
+      "type": "photo",
+      "heading": "두 개의 큰 섬",
+      "lines": [
+        {"who": "N", "text": "독도는 섬 하나가 아니야. 큰 섬 두 개가 사이좋게 서 있어.", "photo": "kocis2.jpg", "caption": "바다에서 본 독도", "emo": "normal"},
+        {"who": "S", "text": "해가 뜨는 동쪽 섬은 '동도', 해가 지는 서쪽 섬은 '서도'라고 불러.", "say": "해가 뜨는 동쪽 섬은 동도, 해가 지는 서쪽 섬은 서도라고 불러.", "photo": "east-isle.jpg", "caption": "동도", "emo": "normal"},
+        {"who": "N", "text": "서도가 동도보다 조금 더 높고 뾰족해.", "photo": "west-isle.jpg", "caption": "서도", "emo": "normal"},
+        {"who": "S", "text": "둘레에 있는 작은 바위섬까지 모두 세면 91개나 된대!", "say": "둘레에 있는 작은 바위섬까지 모두 세면 아흔한 개나 된대!", "photo": "satellite.jpg", "caption": "하늘에서 본 독도", "badge": "섬 91개", "emo": "toneup"}
+      ]
+    },
+    {
+      "type": "photo",
+      "heading": "바다 화산이 만든 섬",
+      "lines": [
+        {"who": "N", "text": "독도는 아주아주 오래전, 바다 밑에서 화산이 터져서 생긴 섬이야.", "photo": "kr06.jpg", "caption": "독도의 바위", "volcano": true, "emo": "normal"},
+        {"who": "S", "text": "그래서 신기하게 생긴 바위가 많아. 이 바위 좀 봐! 가운데에 구멍이 뻥 뚫렸지?", "photo": "kr02.jpg", "caption": "구멍 뚫린 바위", "emo": "toneup"}
+      ]
+    },
+    {
+      "type": "photo",
+      "heading": "독도의 친구들",
+      "lines": [
+        {"who": "S", "text": "독도에는 누가 살까? 바로 괭이갈매기야!", "photo": "east-isle.jpg", "caption": "괭이갈매기가 가득한 동도", "emo": "happy"},
+        {"who": "N", "text": "고양이처럼 '야옹야옹' 운다고 해서 괭이갈매기라는 이름이 붙었대.", "say": "고양이처럼 야옹야옹 운다고 해서 괭이갈매기라는 이름이 붙었대.", "photo": "gull.jpg", "caption": "괭이갈매기", "emo": "happy"},
+        {"who": "S", "text": "봄이 되면 괭이갈매기들이 독도에서 알을 낳고 아기 새를 키워.", "photo": "gull-baby.png", "caption": "아기 괭이갈매기", "emo": "normal"},
+        {"who": "N", "text": "바위틈에는 보랏빛 해국이 예쁘게 피어나.", "photo": "haeguk.jpg", "caption": "독도의 해국", "emo": "happy"},
+        {"who": "S", "text": "바닷속에는 오징어, 전복, 미역 같은 바다 친구들도 가득해.", "photo": "kr03.jpg", "caption": "독도의 맑은 바다", "sea": true, "emo": "normal"},
+        {"who": "N", "text": "그래서 독도는 섬 전체를 소중한 '천연기념물'로 지키고 있어.", "say": "그래서 독도는 섬 전체를 소중한 천연기념물로 지키고 있어.", "photo": "kr01.jpg", "caption": "천연기념물 독도", "badge": "천연기념물", "emo": "normal"}
+      ]
+    },
+    {
+      "type": "photo",
+      "heading": "독도를 지키는 사람들",
+      "lines": [
+        {"who": "S", "text": "독도에는 사람도 있어! 독도를 지키는 경비대원들과 등대를 돌보는 분들이야.", "photo": "police-boat.jpg", "caption": "독도를 지키는 경비정", "emo": "normal"},
+        {"who": "N", "text": "등대는 밤바다를 비춰서 배들이 안전하게 다닐 수 있게 도와줘.", "photo": "facilities.jpg", "caption": "독도의 등대와 시설", "emo": "normal"},
+        {"who": "S", "text": "독도에는 주소도 있어. 경상북도 울릉군 울릉읍 독도리!", "photo": "flag.jpg", "caption": "태극기가 휘날리는 독도", "address": true, "emo": "toneup"}
+      ]
+    },
+    {
+      "type": "timeline",
+      "heading": "옛날부터 우리 땅",
+      "lines": [
+        {"who": "N", "text": "독도는 아주 옛날부터 우리 땅이었어.", "event": -1, "emo": "normal"},
+        {"who": "S", "text": "약 1,500년 전, 신라의 이사부 장군이 울릉도와 독도의 '우산국'을 신라 땅으로 만들었대.", "say": "약 천오백 년 전, 신라의 이사부 장군이 울릉도와 독도의 우산국을 신라 땅으로 만들었대.", "event": 0, "emo": "normal"},
+        {"who": "N", "text": "조선 시대에는 어부 안용복이 일본까지 가서 \"울릉도와 독도는 조선 땅이다!\" 하고 당당하게 말했어.", "say": "조선 시대에는 어부 안용복이 일본까지 가서, 울릉도와 독도는 조선 땅이다! 하고 당당하게 말했어.", "event": 1, "emo": "toneup"}
+      ],
+      "events": [
+        {"year": "512년", "label": "신라 이사부", "img": "samguk-sagi-isabu.jpg", "note": "『삼국사기』 기록"},
+        {"year": "1696년", "label": "조선 안용복", "img": "sukjong-anyongbok.jpg", "note": "『숙종실록』 기록"}
+      ]
+    },
+    {
+      "type": "dokdoday",
+      "lines": [
+        {"who": "S", "text": "그리고 10월 25일은 '독도의 날'이야.", "say": "그리고 시월 이십오일은 독도의 날이야.", "emo": "happy"},
+        {"who": "N", "text": "독도를 더 잘 알고, 더 아끼자고 다 함께 약속하는 날이지.", "emo": "happy"}
+      ]
+    },
+    {
+      "type": "list",
+      "heading": "우리가 할 수 있는 일",
+      "lines": [
+        {"who": "S", "text": "우리가 독도를 지키려면 어떻게 해야 할까?", "item": -1, "emo": "normal"},
+        {"who": "N", "text": "첫째, 독도에 대해 바르게 알기!", "item": 0, "emo": "toneup"},
+        {"who": "S", "text": "둘째, '독도'와 '동해'라는 이름을 바르게 쓰기!", "say": "둘째, 독도와 동해라는 이름을 바르게 쓰기!", "item": 1, "emo": "toneup"},
+        {"who": "N", "text": "셋째, 친구와 가족에게 독도를 자랑하기!", "item": 2, "emo": "toneup"}
+      ],
+      "items": [
+        {"icon": "book", "text": "독도를 바르게 알기"},
+        {"icon": "pen", "text": "'독도', '동해' 바르게 쓰기"},
+        {"icon": "heart", "text": "독도 자랑하기"}
+      ]
+    },
+    {
+      "type": "quiz",
+      "heading": "독도 퀴즈",
+      "lines": [
+        {"who": "S", "text": "독도 퀴즈! 독도는 큰 섬 두 개, 동도와 서도로 이루어져 있다. O일까, X일까?", "say": "독도 퀴즈! 독도는 큰 섬 두 개, 동도와 서도로 이루어져 있다. 오일까, 엑스일까?", "q": 0, "phase": "ask", "pauseAfter": 4, "emo": "toneup"},
+        {"who": "N", "text": "정답은 O! 동도와 서도, 그리고 작은 바위섬들이 모여 있지.", "say": "정답은 오! 동도와 서도, 그리고 작은 바위섬들이 모여 있지.", "q": 0, "phase": "answer", "emo": "happy"},
+        {"who": "N", "text": "두 번째 문제! 고양이처럼 우는 독도의 새는 무엇일까?", "q": 1, "phase": "ask", "pauseAfter": 4, "emo": "toneup"},
+        {"who": "S", "text": "정답은 괭이갈매기!", "q": 1, "phase": "answer", "emo": "happy"}
+      ],
+      "questions": [
+        {"kind": "ox", "q": "독도는 동도와 서도, 큰 섬 두 개로 이루어져 있다.", "answer": "O"},
+        {"kind": "pick", "q": "고양이처럼 우는 독도의 새는?", "choices": ["참새", "괭이갈매기", "펭귄"], "answer": 1}
+      ]
+    },
+    {
+      "type": "ending",
+      "lines": [
+        {"who": "N", "text": "오늘 독도 여행, 재미있었니?", "emo": "happy"},
+        {"who": "S", "text": "독도는 아름답고 소중한 우리 땅!", "emo": "toneup"},
+        {"who": "N", "text": "우리 모두 독도를 사랑하자! 안녕!", "emo": "happy"}
+      ]
+    }
+  ]
+}

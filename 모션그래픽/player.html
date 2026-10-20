@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>독도 모션그래픽</title>
+<style>
+  @font-face { font-family: "Jua"; src: url("assets/fonts/Jua-Regular.ttf"); }
+  @font-face { font-family: "Black Han Sans"; src: url("assets/fonts/BlackHanSans-Regular.ttf"); }
+  @font-face { font-family: "Gowun Dodum"; src: url("assets/fonts/GowunDodum-Regular.ttf"); }
+  html, body { margin: 0; background: #0b1d33; color: #fff; font-family: "Jua", sans-serif; }
+  #wrap { max-width: 1280px; margin: 0 auto; padding: 16px; }
+  canvas { width: 100%; height: auto; display: block; border-radius: 12px; background: #000; }
+  .bar { display: flex; gap: 12px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  button, select { font: inherit; font-size: 18px; padding: 8px 16px; border-radius: 10px; border: 0; background: #1e74c8; color: #fff; cursor: pointer; }
+  input[type=range] { flex: 1; min-width: 200px; }
+  #time { font-variant-numeric: tabular-nums; min-width: 120px; }
+  body.render #wrap { max-width: none; padding: 0; } body.render .bar { display: none; } body.render canvas { width: 1920px; border-radius: 0; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="cv" width="1920" height="1080"></canvas>
+  <div class="bar">
+    <select id="ver"><option value="lower">저학년용</option><option value="upper">고학년용</option></select>
+    <button id="play">▶ 재생</button>
+    <input id="seek" type="range" min="0" max="1000" value="0">
+    <span id="time">0:00</span>
+  </div>
+</div>
+<script src="assets/chars/chars.js"></script>
+<script src="assets/map.js"></script>
+<script src="assets/photos/credits.js"></script>
+<script src="content/lower.timeline.js"></script>
+<script src="content/upper.timeline.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/scenes.js"></script>
+<script>
+(async function () {
+  const qs = new URLSearchParams(location.search);
+  const renderMode = qs.has('render');
+  if (renderMode) document.body.classList.add('render');
+  let ver = qs.get('v') || 'lower';
+  const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  const TL = () => window.TIMELINES[ver];
+
+  const list = ['assets/chars/nari_base.png', 'assets/chars/sani_base.png'];
+  for (const v of Object.values(window.TIMELINES)) v.scenes.forEach((s) => {
+    s.lines.forEach((l) => l.photo && list.push('assets/photos/' + l.photo));
+    (s.events || []).forEach((e) => e.img && list.push('assets/photos/' + e.img));
+  });
+  await E.loadImages([...new Set(list)]);
+  await Promise.all(['Jua', 'Black Han Sans', 'Gowun Dodum'].map((f) => document.fonts.load(`40px "${f}"`, '독도가나다')));
+
+  function renderAt(t) {
+    const tl = TL();
+    t = Math.max(0, Math.min(t, tl.duration - 0.001));
+    let k = tl.scenes.findIndex((s) => t >= s.start && t < s.end); if (k < 0) k = tl.scenes.length - 1;
+    const sc = tl.scenes[k], lt = t - sc.start;
+    const vs = E.voiceState(sc, t);
+    ctx.save();
+    (SCENES[sc.type] || SCENES.photo)(ctx, sc, t, lt, vs, tl);
+    ctx.restore();
+    const lastL = sc.lines[sc.lines.length - 1];
+    if (!(sc.type === 'ending' && t > lastL.start + lastL.dur + 1.0)) E.subtitle(ctx, tl, vs, t);
+    // 장면 전환
+    const WIPE = 0.45;
+    if (k < tl.scenes.length - 1 && t > sc.end - WIPE) E.wipe(ctx, (t - (sc.end - WIPE)) / WIPE, t);
+    if (k > 0 && lt < WIPE) E.wipe(ctx, 1 + lt / WIPE, t);
+    if (t < 0.5) { ctx.fillStyle = `rgba(0,0,0,${1 - t / 0.5})`; ctx.fillRect(0, 0, E.W, E.H); }
+    if (t > tl.duration - 1) { ctx.fillStyle = `rgba(0,0,0,${t - (tl.duration - 1)})`; ctx.fillRect(0, 0, E.W, E.H); }
+  }
+  window.renderAt = renderAt;
+  window.setVersion = (v) => { ver = v; };
+  window.durationOf = (v) => window.TIMELINES[v].duration;
+  window.ready = true;
+  if (renderMode) { renderAt(Number(qs.get('t') || 0)); return; }
+
+  // 미리보기 재생
+  const audio = new Audio();
+  const ui = { play: document.getElementById('play'), seek: document.getElementById('seek'), time: document.getElementById('time'), ver: document.getElementById('ver') };
+  const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  function load() { audio.src = `audio/${ver}/mix.m4a`; ui.ver.value = ver; renderAt(0); }
+  ui.ver.onchange = () => { ver = ui.ver.value; audio.pause(); load(); ui.play.textContent = '▶ 재생'; };
+  ui.play.onclick = () => { if (audio.paused) { audio.play(); ui.play.textContent = '❚❚ 멈춤'; } else { audio.pause(); ui.play.textContent = '▶ 재생'; } };
+  ui.seek.oninput = () => { audio.currentTime = ui.seek.value / 1000 * TL().duration; renderAt(audio.currentTime); };
+  (function loop() {
+    const t = audio.currentTime || 0;
+    if (!audio.paused) { renderAt(t); ui.seek.value = t / TL().duration * 1000; }
+    ui.time.textContent = `${fmt(t)} / ${fmt(TL().duration)}`;
+    requestAnimationFrame(loop);
+  })();
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>독도는 우리 땅! 신나는 빈칸 노래 퀴즈 🎵</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #f59e0b;
+      --teal: #0d9488;
+      --coral: #ef4444;
+      --green: #10b981;
+      --sky: #38bdf8;
+      --bg-gradient: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #7dd3fc 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      --font-fun: 'Jua', 'Noto Sans KR', sans-serif;
+      --font-body: 'Noto Sans KR', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating Clouds */
+    .bg-clouds {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.35;
+    }
+
+    .cloud {
+      position: absolute;
+      background: #ffffff;
+      border-radius: 50px;
+      filter: blur(2px);
+      animation: floatCloud linear infinite;
+    }
+
+    @keyframes floatCloud {
+      from { transform: translateX(-150px); }
+      to { transform: translateX(calc(100vw + 150px)); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 860px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    header {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 18px 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border: 3px solid #e0f2fe;
+    }
+
+    .header-title-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mascot-thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #38bdf8;
+      box-shadow: 0 4px 10px rgba(56, 189, 248, 0.4);
+      background: #fff;
+    }
+
+    h1 {
+      font-family: var(--font-fun);
+      font-size: 1.85rem;
+      color: #0369a1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-shadow: 1px 1px 0 #fff;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stat-badge {
+      background: #f1f5f9;
+      padding: 8px 14px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 2px solid #e2e8f0;
+    }
+
+    .stat-badge.score {
+      background: #fef3c7;
+      color: #b45309;
+      border-color: #fde68a;
+    }
+
+    .stat-badge.combo {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    /* Control Panel */
+    .control-panel {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section-label {
+      font-family: var(--font-fun);
+      font-size: 1.05rem;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      font-family: var(--font-fun);
+      border: 2px solid #cbd5e1;
+      background: #ffffff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #475569;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+    }
+
+    .pill-btn.diff-easy.active {
+      background: #10b981;
+      border-color: #10b981;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+    }
+
+    .pill-btn.diff-med.active {
+      background: #f59e0b;
+      border-color: #f59e0b;
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35);
+    }
+
+    .pill-btn.diff-hard.active {
+      background: #ef4444;
+      border-color: #ef4444;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
+    }
+
+    .track-select-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.9rem;
+    }
+
+    .track-select-box select {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      background: #fff;
+      color: #1e293b;
+      cursor: pointer;
+    }
+
+    /* Main Arena */
+    .arena-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      border: 3px solid #ffffff;
+      min-height: 420px;
+    }
+
+    /* Audio Progress */
+    .audio-tracker {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
+      border-radius: 999px;
+      transition: width 0.25s linear;
+    }
+
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    /* Action bar */
+    .player-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+
+    .btn-main-play {
+      font-family: var(--font-fun);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .btn-main-play:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-main-play:active {
+      transform: translateY(1px);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .status-badge.playing {
+      background: #dcfce7;
+      color: #15803d;
+      animation: pulseGreen 1.5s infinite;
+    }
+
+    .status-badge.waiting {
+      background: #fef3c7;
+      color: #b45309;
+      animation: pulseYellow 1s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes pulseYellow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    /* Karaoke Display */
+    .karaoke-display {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-radius: 20px;
+      padding: 24px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+      border: 3px solid #334155;
+    }
+
+    .karaoke-verse-tag {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #38bdf8;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .current-lyric-line {
+      font-family: var(--font-fun);
+      font-size: 1.85rem;
+      color: #ffffff;
+      line-height: 1.6;
+      word-break: keep-all;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lyric-blank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 140px;
+      padding: 4px 16px;
+      background: #eab308;
+      color: #000000;
+      border-radius: 14px;
+      box-shadow: 0 0 16px rgba(234, 179, 8, 0.7);
+      animation: blankBounce 1s infinite alternate;
+      cursor: pointer;
+    }
+
+    @keyframes blankBounce {
+      from { transform: scale(0.97); }
+      to { transform: scale(1.05); }
+    }
+
+    .lyric-blank.solved {
+      background: #10b981;
+      color: #ffffff;
+      animation: none;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+    }
+
+    .next-lyric-preview {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* Quiz Input Area */
+    .quiz-interaction-area {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-interaction-area.active-question {
+      border: 2px solid #3b82f6;
+      background: #eff6ff;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+    }
+
+    .question-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .question-prompt-title {
+      font-family: var(--font-fun);
+      font-size: 1.25rem;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hint-tag {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: 1px solid #fde68a;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 4-Choice Option Grid (하) */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 580px) {
+      .choice-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .choice-btn {
+      font-family: var(--font-fun);
+      font-size: 1.15rem;
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 2px solid #bfdbfe;
+      color: #1e40af;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      text-align: left;
+    }
+
+    .choice-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #dbeafe;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .choice-btn:hover {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .choice-btn.correct-anim {
+      background: #10b981 !important;
+      color: white !important;
+      border-color: #059669 !important;
+      animation: pulseChoice 0.5s;
+    }
+
+    .choice-btn.wrong-anim {
+      background: #ef4444 !important;
+      color: white !important;
+      border-color: #b91c1c !important;
+      animation: shake 0.4s;
+    }
+
+    /* Short Answer Input Row (중, 상) */
+    .input-answer-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-input-answer {
+      flex: 1;
+      font-family: var(--font-fun);
+      font-size: 1.35rem;
+      padding: 12px 18px;
+      border-radius: 16px;
+      border: 3px solid #3b82f6;
+      background: #ffffff;
+      color: #1e293b;
+      outline: none;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .text-input-answer:focus {
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+      border-color: #1d4ed8;
+    }
+
+    .btn-submit-answer {
+      font-family: var(--font-fun);
+      font-size: 1.2rem;
+      padding: 12px 26px;
+      border-radius: 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-submit-answer:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    /* Feedback Banner */
+    .feedback-banner {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-fun);
+      font-size: 1.15rem;
+      border-radius: 12px;
+      padding: 8px 16px;
+      text-align: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+    }
+
+    .feedback-banner.show {
+      opacity: 1;
+    }
+
+    .feedback-banner.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .feedback-banner.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    /* Educational Context */
+    .curriculum-info-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: #166534;
+      line-height: 1.5;
+    }
+
+    .curriculum-info-box span.badge {
+      background: #22c55e;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Certificate Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .cert-card {
+      background: #fffdf5;
+      border: 8px double #d97706;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 580px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: certPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes certPop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .cert-header {
+      font-family: var(--font-fun);
+      font-size: 2.2rem;
+      color: #b45309;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .cert-sub {
+      font-size: 1rem;
+      color: #78350f;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .cert-name-input {
+      font-family: var(--font-fun);
+      font-size: 1.5rem;
+      border: 2px dashed #b45309;
+      border-radius: 12px;
+      padding: 8px 16px;
+      text-align: center;
+      background: #ffffff;
+      color: #1e293b;
+      margin-bottom: 20px;
+      width: 70%;
+    }
+
+    .cert-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #451a03;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .cert-stats-row {
+      display: flex;
+      justify-content: space-around;
+      background: #fef3c7;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 24px;
+    }
+
+    .cert-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cert-stat-item .val {
+      font-family: var(--font-fun);
+      font-size: 1.4rem;
+      color: #b45309;
+    }
+
+    .cert-stat-item .lbl {
+      font-size: 0.8rem;
+      color: #92400e;
+      font-weight: 600;
+    }
+
+    .cert-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cert {
+      font-family: var(--font-fun);
+      font-size: 1.1rem;
+      padding: 10px 24px;
+      border-radius: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-cert.primary {
+      background: #d97706;
+      color: white;
+    }
+
+    .btn-cert.secondary {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    @keyframes pulseChoice {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px 0;
+      font-size: 0.85rem;
+      color: #0369a1;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating background clouds -->
+  <div class="bg-clouds" id="cloudsWrap"></div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="header-title-box">
+        <img src="gangchi.jpg" alt="아기 강치" class="mascot-thumb" onerror="this.style.display='none'" />
+        <div>
+          <h1>독도는 우리 땅! 🎵</h1>
+          <div class="subtitle">초등학교 6학년 사회과 연계 노래 가사 암기 퀴즈 앱</div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge score">⭐ 점수: <span id="scoreVal">0</span>점</div>
+        <div class="stat-badge combo">🔥 콤보: <span id="comboVal">0</span></div>
+      </div>
+    </header>
+
+    <!-- Control / Setup Panel -->
+    <section class="control-panel">
+      <!-- Difficulty selection -->
+      <div class="control-row">
+        <div class="section-label">🎯 난이도 선택:</div>
+        <div class="pill-group" id="diffGroup">
+          <button class="pill-btn diff-easy active" data-diff="easy">🟢 [하] 객관식 (4지선다)</button>
+          <button class="pill-btn diff-med" data-diff="med">🟡 [중] 초성 힌트 단답형</button>
+          <button class="pill-btn diff-hard" data-diff="hard">🔴 [상] 단답형 빈칸 채우기</button>
+        </div>
+      </div>
+
+      <!-- Verse selection -->
+      <div class="control-row">
+        <div class="section-label">📖 도전 구간:</div>
+        <div class="pill-group" id="verseGroup">
+          <button class="pill-btn active" data-verse="0">🌟 전체 완주 (1~5절)</button>
+          <button class="pill-btn" data-verse="1">1절 (위치와 자연)</button>
+          <button class="pill-btn" data-verse="2">2절 (주소와 기후)</button>
+          <button class="pill-btn" data-verse="3">3절 (생태와 주민)</button>
+          <button class="pill-btn" data-verse="4">4절 (역사적 기록)</button>
+          <button class="pill-btn" data-verse="5">5절 (영유권과 수호)</button>
+        </div>
+      </div>
+
+      <!-- Audio Track Selector -->
+      <div class="control-row">
+        <div class="track-select-box">
+          <span>🎙️ 노래 음원 선택:</span>
+          <select id="audioTrackSelect">
+            <option value="dokdo_song_classic.mp3">정광태 2012 공식 개정판 (교과서 표준 버전)</option>
+            <option value="dokdo_song_flashmob.mp3">전국민 독도 플래시몹 신나는 버전 (축제 댄스곡)</option>
+          </select>
+        </div>
+        <div style="font-size: 0.85rem; color: #64748b;">
+          💡 빈칸이 나오면 노래가 멈추고, 정답을 맞히면 다시 노래가 흘러나와요!
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Quiz Arena -->
+    <main class="arena-card">
+
+      <!-- Player action bar -->
+      <div class="player-action-row">
+        <button id="btnPlayPause" class="btn-main-play">
+          <span id="playIcon">▶</span>
+          <span id="playText">노래 시작하기!</span>
+        </button>
+        <div id="playStatus" class="status-badge">
+          <span>대기 중</span>
+        </div>
+      </div>
+
+      <!-- Audio progress tracker -->
+      <div class="audio-tracker">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+        <div class="time-display">
+          <span id="curTimeText">0:00</span>
+          <span id="quizProgressText">문제 0 / 0</span>
+          <span id="totalTimeText">0:00</span>
+        </div>
+      </div>
+
+      <!-- Karaoke Display Area -->
+      <div class="karaoke-display">
+        <div class="karaoke-verse-tag" id="karaokeVerseTag">1절 - 위치와 자연</div>
+        <div class="current-lyric-line" id="karaokeLine">
+          노래 시작 버튼을 눌러 독도 노래를 신나게 불러보아요!
+        </div>
+        <div class="next-lyric-preview" id="karaokeNext">
+          다음 소절 대기 중...
+        </div>
+      </div>
+
+      <!-- Quiz Input Area -->
+      <div class="quiz-interaction-area" id="quizBox">
+        <div class="question-prompt">
+          <div class="question-prompt-title">
+            <span>❓ 빈칸에 들어갈 알맞은 가사는?</span>
+          </div>
+          <div class="hint-tag" id="hintBadge" style="display: none;">
+            💡 초성 힌트: <strong id="hintText">ㅂㄱㄸㄹ</strong>
+          </div>
+        </div>
+
+        <!-- 4-choice buttons (Easy mode) -->
+        <div class="choice-grid" id="choiceGrid" style="display: none;"></div>
+
+        <!-- Short answer text input (Medium / Hard mode) -->
+        <div class="input-answer-row" id="textInputRow" style="display: none;">
+          <input 
+            type="text" 
+            id="textAnswerInput" 
+            class="text-input-answer" 
+            placeholder="정답을 입력하고 Enter를 누르세요!" 
+            autocomplete="off" 
+          />
+          <button id="btnSubmitAnswer" class="btn-submit-answer">
+            <span>정답 확인</span> ✔
+          </button>
+        </div>
+
+        <!-- Feedback & guidance banner -->
+        <div class="feedback-banner" id="feedbackBanner">
+          정답을 맞히면 다음 노래 소절로 계속 이어집니다!
+        </div>
+
+        <!-- 6th Grade Social Studies Educational Context -->
+        <div class="curriculum-info-box" id="eduTipBox" style="display: none;">
+          <span class="badge">교과서 쏙쏙 돋보기</span>
+          <div id="eduTipText">독도에 관한 흥미진진한 역사·지리 상식이 표시됩니다.</div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Hidden HTML5 Audio -->
+    <audio id="dokdoAudio" preload="auto" src="dokdo_song_classic.mp3"></audio>
+
+    <!-- Footer -->
+    <footer>
+      독도는 우리 땅! 대한민국 아름다운 영토 독도를 사랑하는 마음을 함께 길러요 🇰🇷
+    </footer>
+
+  </div>
+
+  <!-- Certificate Award Modal -->
+  <div class="modal-overlay" id="certModal">
+    <div class="cert-card">
+      <div class="cert-header">독도 지킴이 임명장</div>
+      <div class="cert-sub">명예 대한민국 독도 수호 대원</div>
+
+      <div style="margin-bottom: 8px; font-weight: 700; color: #78350f;">대원 이름:</div>
+      <input type="text" class="cert-name-input" id="certStudentName" value="자랑스러운 독도 지킴이" />
+
+      <p class="cert-body">
+        위 학생은 독도의 노래 가사 빈칸 퀴즈를 성실히 수행하여<br />
+        독도의 위치, 역사, 생태, 주소를 완벽하게 익히고<br />
+        우리 영토 독도를 아끼고 사랑하는 마음을 증명하였으므로<br />
+        <strong>[대한민국 명예 독도 지킴이]</strong>로 정식 임명합니다!
+      </p>
+
+      <div class="cert-stats-row">
+        <div class="cert-stat-item">
+          <span class="val" id="certScore">0</span>
+          <span class="lbl">최종 점수</span>
+        </div>
+        <div class="cert-stat-item">
+          <span class="val" id="certAccuracy">100%</span>
+          <span class="lbl">정답률</span>
+        </div>
+        <div class="cert-stat-item">
+          <span class="val" id="certMaxCombo">0</span>
+          <span class="lbl">최대 콤보</span>
+        </div>
+      </div>
+
+      <div class="cert-actions">
+        <button class="btn-cert primary" onclick="window.print()">🖨️ 임명장 인쇄하기</button>
+        <button class="btn-cert secondary" id="btnCloseCert">다시 도전하기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+     *  독도는 우리 땅 퀴즈 데이터베이스 (2012 개정판 표준)
+     * ========================================================= */
+    const QUIZ_DATA_CLASSIC = [
+      /* 1절 */
+      {
+        id: 1,
+        verse: 1,
+        verseTitle: "1절 - 위치와 자연",
+        timePause: 17.5,
+        resumeTime: 18.0,
+        fullText: "울릉도 동남쪽 뱃길 따라 87K",
+        beforeText: "울릉도 동남쪽 뱃길 따라 ",
+        targetWord: "87K",
+        afterText: "",
+        nextPreview: "외로운 섬 하나 새들의 고향~",
+        acceptedAnswers: ["87k", "87K", "87", "팔칠케이", "팔십칠케이", "팔칠k", "이백리"],
+        initialConsonants: "87K",
+        choices: ["87K", "50K", "120K", "2000리"],
+        eduTip: "2012년 개정 가사에서는 기존의 '200리'를 정확한 거리 단위인 약 87.4km를 반영하여 '87K(팔칠케이)'로 표기합니다."
+      },
+      {
+        id: 2,
+        verse: 1,
+        verseTitle: "1절 - 위치와 자연",
+        timePause: 25.5,
+        resumeTime: 26.0,
+        fullText: "외로운 섬 하나 새들의 고향",
+        beforeText: "외로운 섬 하나 ",
+        targetWord: "새들의 고향",
+        afterText: "",
+        nextPreview: "그 누가 아무리 자기네 땅이라고 우겨도~",
+        acceptedAnswers: ["새들의 고향", "새들의고향", "새들리고향"],
+        initialConsonants: "ㅅㄷㅇ ㄱㅎ",
+        choices: ["새들의 고향", "물고기 천국", "거북이 쉼터", "갈매기 동산"],
+        eduTip: "독도는 괭이갈매기, 바다제비, 슴새 등 희귀 조류들이 번식하는 천연기념물 제336호 '독도 천연보호구역'입니다."
+      },
+      {
+        id: 3,
+        verse: 1,
+        verseTitle: "1절 - 위치와 자연",
+        timePause: 33.5,
+        resumeTime: 34.0,
+        fullText: "그 누가 아무리 자기네 땅이라고 우겨도 독도는 우리 땅",
+        beforeText: "그 누가 아무리 자기네 땅이라고 우겨도 독도는 ",
+        targetWord: "우리 땅",
+        afterText: "",
+        nextPreview: "2절: 경상북도 울릉군 울릉읍 독도리~",
+        acceptedAnswers: ["우리 땅", "우리땅"],
+        initialConsonants: "ㅇㄹ ㄸ",
+        choices: ["우리 땅", "빈 땅", "남의 땅", "이웃 땅"],
+        eduTip: "독도는 역사적, 지리적, 국제법적으로 명백한 대한민국의 고유 영토입니다!"
+      },
+
+      /* 2절 */
+      {
+        id: 4,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 38.0,
+        resumeTime: 38.5,
+        fullText: "경상북도 울릉군 울릉읍 독도리",
+        beforeText: "경상북도 울릉군 울릉읍 ",
+        targetWord: "독도리",
+        afterText: "",
+        nextPreview: "동경 백삼십이 북위 삼십칠~",
+        acceptedAnswers: ["독도리", "독도"],
+        initialConsonants: "ㄷㄷㄹ",
+        choices: ["독도리", "도동리", "저동리", "사동리"],
+        eduTip: "2000년에 행정구역이 개편되어 독도의 공식 행정 주소는 '경상북도 울릉군 울릉읍 독도리'입니다 (과거 남면 도동 1번지)."
+      },
+      {
+        id: 5,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 42.0,
+        resumeTime: 42.5,
+        fullText: "동경 132 북위 37",
+        beforeText: "동경 132 ",
+        targetWord: "북위 37",
+        afterText: "",
+        nextPreview: "평균기온 13도 강수량은 1800~",
+        acceptedAnswers: ["북위 37", "북위37", "북위 삼십칠", "북위삼십칠"],
+        initialConsonants: "ㅂㅇ 37",
+        choices: ["북위 37", "북위 25", "남위 37", "북위 45"],
+        eduTip: "독도의 지리적 위치 좌표는 동경 131도 52분, 북위 37도 14분으로 온대 해양성 기후를 띱니다."
+      },
+      {
+        id: 6,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 45.8,
+        resumeTime: 46.2,
+        fullText: "평균기온 13도 강수량은 1800",
+        beforeText: "평균기온 ",
+        targetWord: "13도",
+        afterText: " 강수량은 1800",
+        nextPreview: "강수량은 1800 독도는 우리 땅~",
+        acceptedAnswers: ["13도", "13", "십삼도", "13℃"],
+        initialConsonants: "13ㄷ",
+        choices: ["13도", "25도", "영하 5도", "18도"],
+        eduTip: "과거 가사는 12도였으나, 기상청 정밀 관측 데이터에 따라 연평균 기온 13도로 개정되었습니다."
+      },
+      {
+        id: 7,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 48.0,
+        resumeTime: 48.5,
+        fullText: "평균기온 13도 강수량은 1800",
+        beforeText: "평균기온 13도 강수량은 ",
+        targetWord: "1800",
+        afterText: "",
+        nextPreview: "독도는 우리 땅~",
+        acceptedAnswers: ["1800", "천팔백", "1800mm", "천팔백밀리"],
+        initialConsonants: "1800",
+        choices: ["1800", "500", "1000", "3000"],
+        eduTip: "독도의 연평균 강수량은 약 1,800mm로 눈과 비가 풍부하게 내리는 해양성 기후입니다."
+      },
+
+      /* 3절 */
+      {
+        id: 8,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 54.0,
+        resumeTime: 54.5,
+        fullText: "오징어 꼴뚜기 대구 홍합 따개비",
+        beforeText: "오징어 꼴뚜기 대구 ",
+        targetWord: "홍합 따개비",
+        afterText: "",
+        nextPreview: "주민등록 최종덕 이장 김성도~",
+        acceptedAnswers: ["홍합 따개비", "홍합따개비", "홍합", "따개비"],
+        initialConsonants: "ㅎㅎ ㄸㄱㅂ",
+        choices: ["홍합 따개비", "명태 거북이", "연어 고등어", "소라 미역"],
+        eduTip: "수온 상승으로 명태와 거북이 대신 현재 독도 주변 바위에 번성하는 '홍합과 따개비'로 가사가 바뀌었습니다."
+      },
+      {
+        id: 9,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 57.0,
+        resumeTime: 57.5,
+        fullText: "주민등록 최종덕 이장 김성도",
+        beforeText: "주민등록 ",
+        targetWord: "최종덕",
+        afterText: " 이장 김성도",
+        nextPreview: "이장 김성도 19만 평방미터~",
+        acceptedAnswers: ["최종덕"],
+        initialConsonants: "ㅊㅈㄷ",
+        choices: ["최종덕", "홍길동", "안용복", "이순신"],
+        eduTip: "고(故) 최종덕 씨는 1965년 독도에 최초로 들어가 거주하며 1981년 독도로 주민등록을 이전한 대한민국 최초 독도 주민입니다."
+      },
+      {
+        id: 10,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 58.8,
+        resumeTime: 59.3,
+        fullText: "주민등록 최종덕 이장 김성도",
+        beforeText: "주민등록 최종덕 이장 ",
+        targetWord: "김성도",
+        afterText: "",
+        nextPreview: "19만 평방미터 799에 805~",
+        acceptedAnswers: ["김성도"],
+        initialConsonants: "ㄱㅅㄷ",
+        choices: ["김성도", "김정호", "박문수", "정약용"],
+        eduTip: "고(故) 김성도 씨는 독도 주민이자 초대 이장으로서 독도 문방구를 열고 평생 독도를 지켰습니다."
+      },
+      {
+        id: 11,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 62.5,
+        resumeTime: 63.0,
+        fullText: "19만 평방미터 799에 805",
+        beforeText: "",
+        targetWord: "19만",
+        afterText: " 평방미터 799에 805",
+        nextPreview: "독도는 우리 땅~",
+        acceptedAnswers: ["19만", "19", "십구만", "190000"],
+        initialConsonants: "19ㅁ",
+        choices: ["19만", "15만", "30만", "50만"],
+        eduTip: "지적 재조사를 통해 독도의 실제 면적이 약 187,554㎡(약 19만 평방미터)로 확인되어 가사에 반영되었습니다 (우편번호: 799-805)."
+      },
+
+      /* 4절 */
+      {
+        id: 12,
+        verse: 4,
+        verseTitle: "4절 - 역사적 기록",
+        timePause: 103.5,
+        resumeTime: 104.0,
+        fullText: "지증왕 13년 섬나라 우산국",
+        beforeText: "",
+        targetWord: "지증왕",
+        afterText: " 13년 섬나라 우산국",
+        nextPreview: "세종실록지리지 강원도 울진현~",
+        acceptedAnswers: ["지증왕", "지증왕 13년"],
+        initialConsonants: "ㅈㅈㅇ",
+        choices: ["지증왕", "광개토대왕", "근초고왕", "세종대왕"],
+        eduTip: "신라 지증왕 13년(서기 512년), 이사부 장군이 우산국(울릉도와 독도)을 복속시켜 우리 역사에 정식 편입되었습니다."
+      },
+      {
+        id: 13,
+        verse: 4,
+        verseTitle: "4절 - 역사적 기록",
+        timePause: 107.5,
+        resumeTime: 108.0,
+        fullText: "세종실록지리지 강원도 울진현",
+        beforeText: "세종실록지리지 강원도 ",
+        targetWord: "울진현",
+        afterText: "",
+        nextPreview: "하와이는 미국땅 대마도는 조선땅~",
+        acceptedAnswers: ["울진현", "울진"],
+        initialConsonants: "ㅇㅈㅎ",
+        choices: ["울진현", "동래현", "전주현", "나주현"],
+        eduTip: "1454년 편찬된 『세종실록지리지』에는 '우산(독도)과 무릉(울릉도) 두 섬이 강원도 울진현의 정동쪽 바다에 있다'고 명시되어 있습니다."
+      },
+      {
+        id: 14,
+        verse: 4,
+        verseTitle: "4절 - 역사적 기록",
+        timePause: 112.5,
+        resumeTime: 113.0,
+        fullText: "하와이는 미국땅 대마도는 조선땅",
+        beforeText: "하와이는 미국땅 ",
+        targetWord: "대마도는 조선땅",
+        afterText: "",
+        nextPreview: "독도는 우리 땅~",
+        acceptedAnswers: ["대마도는 조선땅", "대마도는조선땅", "조선땅", "대마도"],
+        initialConsonants: "ㄷㅁㄷㄴ ㅈㅅㄸ",
+        choices: ["대마도는 조선땅", "대마도는 일본땅", "오키나와는 한국땅", "대마도는 무인도"],
+        eduTip: "과거 가사 '대마도는 일본땅'을 역사적 사료(동국여지승람 등)를 존중하여 '대마도는 조선땅'으로 수정하여 부릅니다."
+      },
+
+      /* 5절 */
+      {
+        id: 15,
+        verse: 5,
+        verseTitle: "5절 - 영유권과 수호",
+        timePause: 119.5,
+        resumeTime: 120.0,
+        fullText: "러일전쟁 직후에 임자 없는 섬이라고",
+        beforeText: "러일전쟁 직후에 ",
+        targetWord: "임자 없는 섬",
+        afterText: "이라고",
+        nextPreview: "억지로 우기면 정말 곤란해~",
+        acceptedAnswers: ["임자 없는 섬", "임자없는섬", "임자없는 섬", "임자 없는섬"],
+        initialConsonants: "ㅇㅈ ㅇㄴ ㅅ",
+        choices: ["임자 없는 섬", "아무도 모르는 섬", "버려진 섬", "신비의 보물섬"],
+        eduTip: "일본은 1905년 러일전쟁 중 주인이 없는 섬이라며 독도를 불법 강탈하려 했으나, 독도는 이미 대한제국 칙령 제41호(1900년)로 공포된 영토였습니다."
+      },
+      {
+        id: 16,
+        verse: 5,
+        verseTitle: "5절 - 영유권과 수호",
+        timePause: 125.0,
+        resumeTime: 125.5,
+        fullText: "신라장군 이사부 지하에서 웃는다",
+        beforeText: "신라장군 ",
+        targetWord: "이사부",
+        afterText: " 지하에서 웃는다",
+        nextPreview: "지하에서 웃는다 독도는 우리 땅~",
+        acceptedAnswers: ["이사부", "이사부장군"],
+        initialConsonants: "ㅇㅅㅂ",
+        choices: ["이사부", "을지문덕", "김유신", "계백"],
+        eduTip: "나무 사자를 만들어 우산국을 복속시켰던 신라의 용장 이사부 장군입니다."
+      },
+      {
+        id: 17,
+        verse: 5,
+        verseTitle: "5절 - 영유권과 수호",
+        timePause: 128.0,
+        resumeTime: 128.5,
+        fullText: "신라장군 이사부 지하에서 웃는다",
+        beforeText: "신라장군 이사부 지하에서 ",
+        targetWord: "웃는다",
+        afterText: "",
+        nextPreview: "독도는 우리 땅! (마무리)",
+        acceptedAnswers: ["웃는다", "웃음"],
+        initialConsonants: "ㅇㄴㄷ",
+        choices: ["웃는다", "운다", "화낸다", "춤춘다"],
+        eduTip: "일본의 억지 주장을 보고 지하에 계신 이사부 장군님도 껄껄 웃으신다는 해학과 결의가 담긴 구절입니다!"
+      }
+    ];
+
+    /* 플래시몹 버전 시간표 */
+    const QUIZ_DATA_FLASHMOB = [
+      /* 1절 */
+      {
+        id: 1,
+        verse: 1,
+        verseTitle: "1절 - 위치와 자연",
+        timePause: 49.0,
+        resumeTime: 49.6,
+        fullText: "울릉도 동남쪽 뱃길 따라 87K",
+        beforeText: "울릉도 동남쪽 뱃길 따라 ",
+        targetWord: "87K",
+        afterText: "",
+        nextPreview: "외로운 섬 하나 새들의 고향~",
+        acceptedAnswers: ["87k", "87K", "87", "팔칠케이", "이백리"],
+        initialConsonants: "87K",
+        choices: ["87K", "50K", "120K", "2000리"],
+        eduTip: "2012년 개정 가사는 200리를 정확한 거리 단위인 약 87.4km를 반영하여 '87K(팔칠케이)'로 노래합니다."
+      },
+      {
+        id: 2,
+        verse: 1,
+        verseTitle: "1절 - 위치와 자연",
+        timePause: 53.5,
+        resumeTime: 54.0,
+        fullText: "외로운 섬 하나 새들의 고향",
+        beforeText: "외로운 섬 하나 ",
+        targetWord: "새들의 고향",
+        afterText: "",
+        nextPreview: "그 누가 아무리 자기네 땅이라고 우겨도~",
+        acceptedAnswers: ["새들의 고향", "새들의고향"],
+        initialConsonants: "ㅅㄷㅇ ㄱㅎ",
+        choices: ["새들의 고향", "물고기 천국", "거북이 쉼터", "갈매기 동산"],
+        eduTip: "독도는 천연기념물 제336호로 지정된 귀중한 새들의 안식처입니다."
+      },
+      {
+        id: 3,
+        verse: 1,
+        verseTitle: "1절 - 위치와 자연",
+        timePause: 57.5,
+        resumeTime: 58.2,
+        fullText: "그 누가 아무리 자기네 땅이라고 우겨도 독도는 우리 땅",
+        beforeText: "그 누가 아무리 자기네 땅이라고 우겨도 독도는 ",
+        targetWord: "우리 땅",
+        afterText: "",
+        nextPreview: "2절: 경상북도 울릉군 울릉읍 독도리~",
+        acceptedAnswers: ["우리 땅", "우리땅"],
+        initialConsonants: "ㅇㄹ ㄸ",
+        choices: ["우리 땅", "빈 땅", "남의 땅", "이웃 땅"],
+        eduTip: "독도는 대한민국 헌법과 국제법에 의해 수호되는 고유 영토입니다!"
+      },
+
+      /* 2절 */
+      {
+        id: 4,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 64.0,
+        resumeTime: 64.6,
+        fullText: "경상북도 울릉군 울릉읍 독도리",
+        beforeText: "경상북도 울릉군 울릉읍 ",
+        targetWord: "독도리",
+        afterText: "",
+        nextPreview: "동경 백삼십이 북위 삼십칠~",
+        acceptedAnswers: ["독도리", "독도"],
+        initialConsonants: "ㄷㄷㄹ",
+        choices: ["독도리", "도동리", "저동리", "사동리"],
+        eduTip: "독도의 도로명 공식 주소는 '경상북도 울릉군 울릉읍 독도리'입니다."
+      },
+      {
+        id: 5,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 66.8,
+        resumeTime: 67.4,
+        fullText: "동경 132 북위 37",
+        beforeText: "동경 132 ",
+        targetWord: "북위 37",
+        afterText: "",
+        nextPreview: "평균기온 13도 강수량은 1800~",
+        acceptedAnswers: ["북위 37", "북위37", "북위 삼십칠"],
+        initialConsonants: "ㅂㅇ 37",
+        choices: ["북위 37", "북위 25", "남위 37", "북위 45"],
+        eduTip: "독도는 동경 131도 52분, 북위 37도 14분에 자리잡고 있습니다."
+      },
+      {
+        id: 6,
+        verse: 2,
+        verseTitle: "2절 - 주소와 기후",
+        timePause: 69.8,
+        resumeTime: 70.4,
+        fullText: "평균기온 13도 강수량은 1800",
+        beforeText: "평균기온 13도 강수량은 ",
+        targetWord: "1800",
+        afterText: "",
+        nextPreview: "독도는 우리 땅~",
+        acceptedAnswers: ["1800", "천팔백"],
+        initialConsonants: "1800",
+        choices: ["1800", "500", "1000", "3000"],
+        eduTip: "연평균 강수량은 약 1,800mm로 눈과 비가 풍부한 해양성 기후입니다."
+      },
+
+      /* 3절 */
+      {
+        id: 7,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 92.5,
+        resumeTime: 93.1,
+        fullText: "오징어 꼴뚜기 대구 홍합 따개비",
+        beforeText: "오징어 꼴뚜기 대구 ",
+        targetWord: "홍합 따개비",
+        afterText: "",
+        nextPreview: "주민등록 최종덕 이장 김성도~",
+        acceptedAnswers: ["홍합 따개비", "홍합따개비", "홍합", "따개비"],
+        initialConsonants: "ㅎㅎ ㄸㄱㅂ",
+        choices: ["홍합 따개비", "명태 거북이", "연어 고등어", "소라 미역"],
+        eduTip: "독도 연안 바위에는 홍합과 따개비가 무수히 서식하고 있습니다."
+      },
+      {
+        id: 8,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 95.8,
+        resumeTime: 96.4,
+        fullText: "주민등록 최종덕 이장 김성도",
+        beforeText: "주민등록 최종덕 이장 ",
+        targetWord: "김성도",
+        afterText: "",
+        nextPreview: "19만 평방미터 799에 805~",
+        acceptedAnswers: ["김성도"],
+        initialConsonants: "ㄱㅅㄷ",
+        choices: ["김성도", "김정호", "박문수", "정약용"],
+        eduTip: "고 김성도 초대 이장님은 평생을 독도를 지키며 대한민국 국민이 살고 있음을 널리 알렸습니다."
+      },
+      {
+        id: 9,
+        verse: 3,
+        verseTitle: "3절 - 생태와 주민",
+        timePause: 98.8,
+        resumeTime: 99.4,
+        fullText: "19만 평방미터 799에 805",
+        beforeText: "",
+        targetWord: "19만",
+        afterText: " 평방미터 799에 805",
+        nextPreview: "독도는 우리 땅~",
+        acceptedAnswers: ["19만", "19", "십구만"],
+        initialConsonants: "19ㅁ",
+        choices: ["19만", "15만", "30만", "50만"],
+        eduTip: "독도의 총면적은 약 19만㎡(동도·서도 및 89개 부속섬)입니다."
+      },
+
+      /* 4절 */
+      {
+        id: 10,
+        verse: 4,
+        verseTitle: "4절 - 역사적 기록",
+        timePause: 108.5,
+        resumeTime: 109.1,
+        fullText: "지증왕 13년 섬나라 우산국",
+        beforeText: "",
+        targetWord: "지증왕",
+        afterText: " 13년 섬나라 우산국",
+        nextPreview: "세종실록지리지 강원도 울진현~",
+        acceptedAnswers: ["지증왕"],
+        initialConsonants: "ㅈㅈㅇ",
+        choices: ["지증왕", "광개토대왕", "근초고왕", "세종대왕"],
+        eduTip: "신라 512년 지증왕 13년, 이사부 장군에 의해 독도는 우리 역사에 편입되었습니다."
+      },
+      {
+        id: 11,
+        verse: 4,
+        verseTitle: "4절 - 역사적 기록",
+        timePause: 112.5,
+        resumeTime: 113.1,
+        fullText: "세종실록지리지 강원도 울진현",
+        beforeText: "세종실록지리지 강원도 ",
+        targetWord: "울진현",
+        afterText: "",
+        nextPreview: "하와이는 미국땅 대마도는 조선땅~",
+        acceptedAnswers: ["울진현", "울진"],
+        initialConsonants: "ㅇㅈㅎ",
+        choices: ["울진현", "동래현", "전주현", "나주현"],
+        eduTip: "세종실록지리지에는 울릉도와 독도가 강원도 울진현 소속으로 분명하게 기록되어 있습니다."
+      },
+      {
+        id: 12,
+        verse: 4,
+        verseTitle: "4절 - 역사적 기록",
+        timePause: 115.5,
+        resumeTime: 116.1,
+        fullText: "하와이는 미국땅 대마도는 조선땅",
+        beforeText: "하와이는 미국땅 ",
+        targetWord: "대마도는 조선땅",
+        afterText: "",
+        nextPreview: "독도는 우리 땅~",
+        acceptedAnswers: ["대마도는 조선땅", "대마도는조선땅", "조선땅"],
+        initialConsonants: "ㄷㅁㄷㄴ ㅈㅅㄸ",
+        choices: ["대마도는 조선땅", "대마도는 일본땅", "오키나와는 한국땅", "독도는 무인도"],
+        eduTip: "역사적 문헌에 따라 '대마도는 조선땅'으로 수정하여 바르게 부릅니다."
+      },
+
+      /* 5절 */
+      {
+        id: 13,
+        verse: 5,
+        verseTitle: "5절 - 영유권과 수호",
+        timePause: 153.5,
+        resumeTime: 154.2,
+        fullText: "러일전쟁 직후에 임자 없는 섬이라고",
+        beforeText: "러일전쟁 직후에 ",
+        targetWord: "임자 없는 섬",
+        afterText: "이라고",
+        nextPreview: "억지로 우기면 정말 곤란해~",
+        acceptedAnswers: ["임자 없는 섬", "임자없는섬"],
+        initialConsonants: "ㅇㅈ ㅇㄴ ㅅ",
+        choices: ["임자 없는 섬", "아무도 모르는 섬", "버려진 섬", "신비의 보물섬"],
+        eduTip: "대한제국 칙령 제41호(1900년)로 이미 관할 영토로 선포되어 있었습니다."
+      },
+      {
+        id: 14,
+        verse: 5,
+        verseTitle: "5절 - 영유권과 수호",
+        timePause: 158.5,
+        resumeTime: 159.2,
+        fullText: "신라장군 이사부 지하에서 웃는다",
+        beforeText: "신라장군 ",
+        targetWord: "이사부",
+        afterText: " 지하에서 웃는다",
+        nextPreview: "지하에서 웃는다 독도는 우리 땅~",
+        acceptedAnswers: ["이사부"],
+        initialConsonants: "ㅇㅅㅂ",
+        choices: ["이사부", "을지문덕", "김유신", "계백"],
+        eduTip: "우산국을 복속한 신라의 이사부 장군님입니다."
+      }
+    ];
+
+    /* =========================================================
+     *  웹 사운드 합성기 (Web Audio API)
+     * ========================================================= */
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playCorrect() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 (화려한 딩동댕)
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+          gain.gain.setValueAtTime(0.25, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.4);
+        });
+      }
+
+      playWrong() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(140, now + 0.28);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.32);
+      }
+
+      playFanfare() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const chords = [
+          { f: [523.25, 659.25, 783.99], t: 0.0, d: 0.2 },
+          { f: [523.25, 659.25, 783.99], t: 0.22, d: 0.2 },
+          { f: [523.25, 659.25, 783.99], t: 0.44, d: 0.2 },
+          { f: [659.25, 783.99, 1046.50], t: 0.7, d: 0.8 }
+        ];
+
+        chords.forEach(c => {
+          c.f.forEach(freq => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + c.t);
+            gain.gain.setValueAtTime(0.2, now + c.t);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + c.t + c.d);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + c.t);
+            osc.stop(now + c.t + c.d);
+          });
+        });
+      }
+    }
+
+    const sfx = new SoundFX();
+
+    /* =========================================================
+     *  앱 상태 관리
+     * ========================================================= */
+    const audioEl = document.getElementById('dokdoAudio');
+    let currentDifficulty = 'easy'; // 'easy' (하), 'med' (중), 'hard' (상)
+    let selectedVerse = 0;         // 0: 전체, 1~5: 각 절
+    let activeQuizList = [];
+    let currentQuizIndex = 0;
+    let isWaitingAnswer = false;
+    let activeQuestion = null;
+
+    let score = 0;
+    let combo = 0;
+    let maxCombo = 0;
+    let totalAttempts = 0;
+    let correctAttempts = 0;
+
+    // DOM Elements
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const playIcon = document.getElementById('playIcon');
+    const playText = document.getElementById('playText');
+    const playStatus = document.getElementById('playStatus');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const curTimeText = document.getElementById('curTimeText');
+    const totalTimeText = document.getElementById('totalTimeText');
+    const quizProgressText = document.getElementById('quizProgressText');
+    const scoreVal = document.getElementById('scoreVal');
+    const comboVal = document.getElementById('comboVal');
+
+    const karaokeVerseTag = document.getElementById('karaokeVerseTag');
+    const karaokeLine = document.getElementById('karaokeLine');
+    const karaokeNext = document.getElementById('karaokeNext');
+
+    const quizBox = document.getElementById('quizBox');
+    const hintBadge = document.getElementById('hintBadge');
+    const hintText = document.getElementById('hintText');
+    const choiceGrid = document.getElementById('choiceGrid');
+    const textInputRow = document.getElementById('textInputRow');
+    const textAnswerInput = document.getElementById('textAnswerInput');
+    const btnSubmitAnswer = document.getElementById('btnSubmitAnswer');
+    const feedbackBanner = document.getElementById('feedbackBanner');
+    const eduTipBox = document.getElementById('eduTipBox');
+    const eduTipText = document.getElementById('eduTipText');
+
+    const audioTrackSelect = document.getElementById('audioTrackSelect');
+    const certModal = document.getElementById('certModal');
+    const btnCloseCert = document.getElementById('btnCloseCert');
+
+    /* =========================================================
+     *  초기화 & 이벤트 바인딩
+     * ========================================================= */
+    function initApp() {
+      setupClouds();
+      setupPillButtons();
+      loadActiveQuizDataset();
+
+      btnPlayPause.addEventListener('click', togglePlay);
+      audioTrackSelect.addEventListener('change', handleTrackChange);
+      btnSubmitAnswer.addEventListener('click', handleShortAnswerSubmit);
+      textAnswerInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleShortAnswerSubmit();
+      });
+
+      audioEl.addEventListener('timeupdate', onAudioTimeUpdate);
+      audioEl.addEventListener('ended', onAudioEnded);
+      audioEl.addEventListener('loadedmetadata', updateTimeDisplay);
+
+      btnCloseCert.addEventListener('click', () => {
+        certModal.classList.remove('active');
+        resetQuiz();
+      });
+    }
+
+    function setupClouds() {
+      const wrap = document.getElementById('cloudsWrap');
+      for (let i = 0; i < 6; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        const w = 90 + Math.random() * 120;
+        const h = 30 + Math.random() * 40;
+        cloud.style.width = w + 'px';
+        cloud.style.height = h + 'px';
+        cloud.style.top = (10 + Math.random() * 50) + '%';
+        cloud.style.left = (Math.random() * 80) + '%';
+        cloud.style.animationDuration = (28 + Math.random() * 35) + 's';
+        cloud.style.animationDelay = (-Math.random() * 20) + 's';
+        wrap.appendChild(cloud);
+      }
+    }
+
+    function setupPillButtons() {
+      // Difficulty buttons
+      document.querySelectorAll('#diffGroup .pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#diffGroup .pill-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentDifficulty = btn.dataset.diff;
+          if (isWaitingAnswer) {
+            renderCurrentQuestionUI(activeQuestion);
+          }
+        });
+      });
+
+      // Verse buttons
+      document.querySelectorAll('#verseGroup .pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#verseGroup .pill-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedVerse = parseInt(btn.dataset.verse, 10);
+          loadActiveQuizDataset();
+          resetQuiz();
+        });
+      });
+    }
+
+    function handleTrackChange() {
+      const wasPlaying = !audioEl.paused;
+      audioEl.pause();
+      audioEl.src = audioTrackSelect.value;
+      audioEl.load();
+      loadActiveQuizDataset();
+      resetQuiz();
+      if (wasPlaying) {
+        togglePlay();
+      }
+    }
+
+    function loadActiveQuizDataset() {
+      const isClassic = audioTrackSelect.value.includes('classic');
+      const fullList = isClassic ? QUIZ_DATA_CLASSIC : QUIZ_DATA_FLASHMOB;
+
+      if (selectedVerse === 0) {
+        activeQuizList = [...fullList];
+      } else {
+        activeQuizList = fullList.filter(item => item.verse === selectedVerse);
+      }
+
+      currentQuizIndex = 0;
+      updateQuizProgressUI();
+    }
+
+    function resetQuiz() {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+      isWaitingAnswer = false;
+      activeQuestion = null;
+      currentQuizIndex = 0;
+      score = 0;
+      combo = 0;
+      maxCombo = 0;
+      totalAttempts = 0;
+      correctAttempts = 0;
+
+      scoreVal.textContent = '0';
+      comboVal.textContent = '0';
+
+      playIcon.textContent = '▶';
+      playText.textContent = '노래 시작하기!';
+      playStatus.className = 'status-badge';
+      playStatus.innerHTML = '<span>대기 중</span>';
+
+      karaokeVerseTag.textContent = selectedVerse === 0 ? '전체 완주 모드' : selectedVerse + '절 도전 중';
+      karaokeLine.innerHTML = '노래 시작 버튼을 눌러 독도 노래를 신나게 불러보아요!';
+      karaokeNext.textContent = '첫 번째 문제 대기 중...';
+
+      quizBox.classList.remove('active-question');
+      choiceGrid.style.display = 'none';
+      textInputRow.style.display = 'none';
+      hintBadge.style.display = 'none';
+      eduTipBox.style.display = 'none';
+      feedbackBanner.className = 'feedback-banner';
+      feedbackBanner.textContent = '정답을 맞히면 다음 노래 소절로 계속 이어집니다!';
+
+      updateProgressBar(0, 1);
+    }
+
+    /* =========================================================
+     *  오디오 재생 & 타임코드 모니터링
+     * ========================================================= */
+    function togglePlay() {
+      sfx.init();
+      if (audioEl.paused) {
+        audioEl.play().then(() => {
+          playIcon.textContent = '⏸';
+          playText.textContent = '노래 일시정지';
+          playStatus.className = 'status-badge playing';
+          playStatus.innerHTML = '<span>🎵 노래 재생 중</span>';
+        }).catch(err => {
+          console.warn('Playback error:', err);
+        });
+      } else {
+        audioEl.pause();
+        playIcon.textContent = '▶';
+        playText.textContent = '노래 이어듣기';
+        playStatus.className = 'status-badge';
+        playStatus.innerHTML = '<span>일시 정지</span>';
+      }
+    }
+
+    function onAudioTimeUpdate() {
+      if (isWaitingAnswer) return;
+
+      const cur = audioEl.currentTime;
+      const dur = audioEl.duration || 1;
+      updateProgressBar(cur, dur);
+
+      // Check if current playback time hit next quiz pause mark
+      if (currentQuizIndex < activeQuizList.length) {
+        const nextQ = activeQuizList[currentQuizIndex];
+        if (cur >= nextQ.timePause) {
+          triggerQuizQuestion(nextQ);
+        }
+      }
+    }
+
+    function updateProgressBar(cur, dur) {
+      const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
+      progressBarFill.style.width = pct + '%';
+      curTimeText.textContent = formatTime(cur);
+      totalTimeText.textContent = formatTime(dur);
+    }
+
+    function updateTimeDisplay() {
+      totalTimeText.textContent = formatTime(audioEl.duration || 0);
+    }
+
+    function formatTime(sec) {
+      if (!sec || isNaN(sec)) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    /* =========================================================
+     *  퀴즈 문제 출제 & UI 렌더링
+     * ========================================================= */
+    function triggerQuizQuestion(q) {
+      audioEl.pause();
+      isWaitingAnswer = true;
+      activeQuestion = q;
+
+      playStatus.className = 'status-badge waiting';
+      playStatus.innerHTML = '<span>❓ 빈칸 문제 등장!</span>';
+      quizBox.classList.add('active-question');
+
+      // Update Karaoke line with glowing blank
+      karaokeVerseTag.textContent = q.verseTitle;
+      karaokeLine.innerHTML = `
+        <span>${escapeHtml(q.beforeText)}</span>
+        <span class="lyric-blank" id="activeBlank">[ ? ]</span>
+        <span>${escapeHtml(q.afterText)}</span>
+      `;
+      karaokeNext.textContent = '다음 소절: ' + q.nextPreview;
+
+      renderCurrentQuestionUI(q);
+    }
+
+    function renderCurrentQuestionUI(q) {
+      if (!q) return;
+
+      feedbackBanner.className = 'feedback-banner';
+      feedbackBanner.textContent = '알맞은 정답을 입력하거나 선택해주세요!';
+
+      if (currentDifficulty === 'easy') {
+        // [하] 객관식
+        hintBadge.style.display = 'none';
+        textInputRow.style.display = 'none';
+        choiceGrid.style.display = 'grid';
+        choiceGrid.innerHTML = '';
+
+        q.choices.forEach((choiceText, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'choice-btn';
+          btn.innerHTML = `
+            <span class="choice-num">${idx + 1}</span>
+            <span>${escapeHtml(choiceText)}</span>
+          `;
+          btn.addEventListener('click', () => checkChoiceAnswer(choiceText, btn));
+          choiceGrid.appendChild(btn);
+        });
+
+      } else if (currentDifficulty === 'med') {
+        // [중] 초성 힌트 단답형
+        choiceGrid.style.display = 'none';
+        textInputRow.style.display = 'flex';
+        hintBadge.style.display = 'inline-flex';
+        hintText.textContent = q.initialConsonants;
+        textAnswerInput.value = '';
+        textAnswerInput.placeholder = `초성 [ ${q.initialConsonants} ] 정답을 입력하세요!`;
+        setTimeout(() => textAnswerInput.focus(), 100);
+
+      } else {
+        // [상] 단답형
+        choiceGrid.style.display = 'none';
+        textInputRow.style.display = 'flex';
+        hintBadge.style.display = 'none';
+        textAnswerInput.value = '';
+        textAnswerInput.placeholder = '힌트 없이 정답을 직접 입력하세요!';
+        setTimeout(() => textAnswerInput.focus(), 100);
+      }
+
+      eduTipBox.style.display = 'none';
+    }
+
+    /* =========================================================
+     *  정답 검증 로직
+     * ========================================================= */
+    function checkChoiceAnswer(selectedAnswer, clickedBtn) {
+      if (!isWaitingAnswer) return;
+      totalAttempts++;
+
+      const isCorrect = isAnswerMatch(selectedAnswer, activeQuestion);
+      if (isCorrect) {
+        clickedBtn.classList.add('correct-anim');
+        handleCorrectAnswer(activeQuestion.targetWord);
+      } else {
+        clickedBtn.classList.add('wrong-anim');
+        handleWrongAnswer();
+      }
+    }
+
+    function handleShortAnswerSubmit() {
+      if (!isWaitingAnswer) return;
+      const userText = textAnswerInput.value.trim();
+      if (!userText) {
+        showFeedback(false, '정답을 입력해주세요!');
+        return;
+      }
+      totalAttempts++;
+
+      const isCorrect = isAnswerMatch(userText, activeQuestion);
+      if (isCorrect) {
+        handleCorrectAnswer(activeQuestion.targetWord);
+      } else {
+        handleWrongAnswer();
+      }
+    }
+
+    function isAnswerMatch(input, question) {
+      const normalize = str => str.toLowerCase().replace(/\s+/g, '').replace(/[^0-9a-zA-Z가-힣]/g, '');
+      const cleanInput = normalize(input);
+
+      for (let cand of question.acceptedAnswers) {
+        if (cleanInput === normalize(cand)) {
+          return true;
+        }
+      }
+      if (cleanInput === normalize(question.targetWord)) {
+        return true;
+      }
+      return false;
+    }
+
+    function handleCorrectAnswer(solvedWord) {
+      correctAttempts++;
+      combo++;
+      if (combo > maxCombo) maxCombo = combo;
+      score += 100 + (combo * 10);
+
+      scoreVal.textContent = score;
+      comboVal.textContent = combo;
+
+      sfx.playCorrect();
+
+      // Update Blank in Karaoke
+      const blankEl = document.getElementById('activeBlank');
+      if (blankEl) {
+        blankEl.className = 'lyric-blank solved';
+        blankEl.textContent = solvedWord;
+      }
+
+      // Show Feedback
+      showFeedback(true, `🎉 딩동댕! 정답입니다! (+${100 + (combo * 10)}점, ${combo}콤보!)`);
+
+      // Show educational tip
+      eduTipText.innerHTML = `<strong>[${escapeHtml(activeQuestion.targetWord)}]</strong> ${escapeHtml(activeQuestion.eduTip)}`;
+      eduTipBox.style.display = 'flex';
+
+      // Confetti burst on combo
+      if (combo % 3 === 0) {
+        triggerConfetti(60);
+      }
+
+      // Advance quiz index
+      currentQuizIndex++;
+      updateQuizProgressUI();
+
+      // Smooth resume after 1.2s delay
+      setTimeout(() => {
+        isWaitingAnswer = false;
+        quizBox.classList.remove('active-question');
+        choiceGrid.style.display = 'none';
+        textInputRow.style.display = 'none';
+        hintBadge.style.display = 'none';
+
+        if (currentQuizIndex >= activeQuizList.length) {
+          handleAllQuizzesCompleted();
+        } else {
+          audioEl.currentTime = activeQuestion.resumeTime;
+          audioEl.play();
+          playIcon.textContent = '⏸';
+          playText.textContent = '노래 일시정지';
+          playStatus.className = 'status-badge playing';
+          playStatus.innerHTML = '<span>🎵 노래 재생 중</span>';
+        }
+      }, 1200);
+    }
+
+    function handleWrongAnswer() {
+      combo = 0;
+      comboVal.textContent = '0';
+      sfx.playWrong();
+
+      let msg = '앗, 다시 한번 생각해보세요! 💡';
+      if (currentDifficulty !== 'easy' && activeQuestion) {
+        msg += ` (초성 힌트: ${activeQuestion.initialConsonants})`;
+      }
+      showFeedback(false, msg);
+
+      // Shake animation on quiz box
+      quizBox.style.animation = 'none';
+      void quizBox.offsetWidth;
+      quizBox.style.animation = 'shake 0.4s';
+    }
+
+    function showFeedback(isSuccess, message) {
+      feedbackBanner.className = 'feedback-banner show ' + (isSuccess ? 'success' : 'wrong');
+      feedbackBanner.textContent = message;
+    }
+
+    function updateQuizProgressUI() {
+      quizProgressText.textContent = `문제 ${Math.min(currentQuizIndex, activeQuizList.length)} / ${activeQuizList.length}`;
+    }
+
+    /* =========================================================
+     *  완주 축하 & 임명장 모달
+     * ========================================================= */
+    function handleAllQuizzesCompleted() {
+      sfx.playFanfare();
+      triggerConfetti(200);
+
+      playStatus.className = 'status-badge';
+      playStatus.innerHTML = '<span>🏆 전 문제 완주 달성!</span>';
+      karaokeLine.innerHTML = '🎉 축하합니다! 독도 노래 빈칸 퀴즈를 모두 맞혔습니다! 🇰🇷';
+      karaokeNext.textContent = '독도는 역사와 자연이 살아 숨 쉬는 우리 땅입니다!';
+
+      const accuracy = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 100;
+
+      document.getElementById('certScore').textContent = score + '점';
+      document.getElementById('certAccuracy').textContent = accuracy + '%';
+      document.getElementById('certMaxCombo').textContent = maxCombo + '회';
+
+      setTimeout(() => {
+        certModal.classList.add('active');
+      }, 1400);
+    }
+
+    function onAudioEnded() {
+      if (!isWaitingAnswer && currentQuizIndex >= activeQuizList.length) {
+        handleAllQuizzesCompleted();
+      }
+    }
+
+    /* =========================================================
+     *  캔버스 색종이(Confetti) 파티클 시스템
+     * ========================================================= */
+    function triggerConfetti(count = 100) {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#2563eb', '#38bdf8', '#f59e0b', '#ef4444', '#10b981', '#ec4899', '#ffffff'];
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: canvas.width * 0.5 + (Math.random() - 0.5) * 300,
+          y: canvas.height * 0.4 + (Math.random() - 0.5) * 150,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.9) * 16,
+          size: 6 + Math.random() * 8,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 10,
+          alpha: 1
+        });
+      }
+
+      let animId;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.4;
+          p.rot += p.rotSpeed;
+          p.alpha -= 0.008;
+
+          if (p.alpha > 0) {
+            alive = true;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, p.alpha);
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rot * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+            ctx.restore();
+          }
+        });
+
+        if (alive) {
+          animId = requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(animId);
+        }
+      }
+      animate();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
